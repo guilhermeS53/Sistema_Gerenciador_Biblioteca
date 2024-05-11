@@ -1,6 +1,7 @@
 # :books: Sistema Gerenciador de Biblioteca em Java
 
 Objetivo: Implementar um sistema simples em Java, que apresenta via linha de comando (CLI) um menu de Biblioteca com as opções:
+
 - Cadastrar Livro :x:
 - Cadastrar Usuário :x:
 - Listar Livros :x:
@@ -21,3 +22,13 @@ Objetivo: Implementar um sistema simples em Java, que apresenta via linha de com
 - Java Development Kit (JDK)
 - Gerenciador de Pacotes Maven
 - Spring
+
+<div> 
+  <h1>Tecnologias Utilizadas</h1>
+<p align="center">
+  <a href="https://skillicons.dev">
+    <img src="https://skillicons.dev/icons?i=github,java,maven,spring,vscode" />
+  </a>
+</p>
+ </div>
+<div>
