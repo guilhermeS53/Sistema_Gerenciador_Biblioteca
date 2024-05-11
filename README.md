@@ -27,7 +27,7 @@ Objetivo: Implementar um sistema simples em Java, que apresenta via linha de com
   <h1>Tecnologias Utilizadas</h1>
 <p align="center">
   <a href="https://skillicons.dev">
-    <img src="https://skillicons.dev/icons?i=github,java,maven,spring,vscode" />
+    <img src="https://skillicons.dev/icons?i=java,maven,spring,vscode,github" />
   </a>
 </p>
  </div>
