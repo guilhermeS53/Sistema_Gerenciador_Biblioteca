@@ -2,6 +2,7 @@ package com.ifgoiano.biblioteca.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ifgoiano.biblioteca.model.Usuario;
 import com.ifgoiano.biblioteca.repository.UsuarioRepository;
@@ -10,6 +11,7 @@ import com.ifgoiano.biblioteca.repository.UsuarioRepository;
 @Service
 public class UsuarioService {
 
+    @Autowired
     private UsuarioRepository usuarioRepository;
 
     public List<Usuario> findAll() {
