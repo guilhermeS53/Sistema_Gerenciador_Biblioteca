@@ -2,10 +2,10 @@
 
 Objetivo: Implementar um sistema simples em Java, que apresenta via linha de comando (CLI) um menu de Biblioteca com as opções:
 
-- Cadastrar Livro :white-check-mark:
-- Cadastrar Usuário :white-check-mark:
-- Listar Livros :white-check-mark:
-- Buscar Livro :white-check-mark:
+- Cadastrar Livro :white_check_mark:
+- Cadastrar Usuário :white_check_mark:
+- Listar Livros :white_check_mark:
+- Buscar Livro :white_check_mark:
 - Atualizar Livro :x:
 - Excluir Livro :x:
 - Emprestar Livro :x:
