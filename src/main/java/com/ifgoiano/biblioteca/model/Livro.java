@@ -6,7 +6,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 
 // Criação da Entidade Livro na lógica de negócio em Model
@@ -21,10 +20,6 @@ public class Livro {
     private String autor;
     private int anoPub;
     private String isbn;
-
-    @OneToMany(mappedBy = "livro")
-
-    private List<Emprestimo> emprestimos;
 
     @OneToOne
     private Resenha resenha;
@@ -68,21 +63,4 @@ public class Livro {
     public void setIsbn(String isbn) {
         this.isbn = isbn;
     }
-
-    public List<Emprestimo> getEmprestimos() {
-        return emprestimos;
-    }
-
-    public void setEmprestimos(List<Emprestimo> emprestimos) {
-        this.emprestimos = emprestimos;
-    }
-
-    public Resenha getResenha() {
-        return resenha;
-    }
-
-    public void setResenha(Resenha resenha) {
-        this.resenha = resenha;
-    }
-
 }

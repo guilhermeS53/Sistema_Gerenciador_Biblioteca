@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 import java.time.LocalDate;
@@ -19,9 +20,10 @@ public class Emprestimo {
     private LocalDate dataEmprestimo;
     private LocalDate dataDevolucao;
     private String status;
-    private String multa;
+    private Double multa;
 
     @ManyToOne
+    @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
     @ManyToOne
@@ -59,11 +61,11 @@ public class Emprestimo {
         this.status = status;
     }
 
-    public String getMulta() {
+    public Double getMulta() {
         return multa;
     }
 
-    public void setMulta(String multa) {
+    public void setMulta(Double multa) {
         this.multa = multa;
     }
 

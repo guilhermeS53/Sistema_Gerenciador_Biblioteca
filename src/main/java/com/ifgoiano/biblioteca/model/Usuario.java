@@ -1,11 +1,16 @@
 package com.ifgoiano.biblioteca.model;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 // Criação da Entidade Usuário na lógica de negócio em Model
+// Adicionado @Entity para que o Hibernate possa encontrar a entidade
+@Entity
+
 public class Usuario {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
