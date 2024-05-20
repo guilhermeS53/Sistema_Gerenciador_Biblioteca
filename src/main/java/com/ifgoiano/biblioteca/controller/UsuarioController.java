@@ -16,15 +16,13 @@ public class UsuarioController {
 
     @Autowired
     private UsuarioService usuarioService;
-    /*Executa o Controlador de Usuários, permitindo interação com os usuários da Biblioteca 
-    */
-    public void run() {
-        Scanner scanner = new Scanner(System.in);
+
+    public void run(Scanner scanner) {
         while (true) {
-            System.out.println("Escolha uma opção abaixo:");
+            System.out.println("Gerenciar Usuários:");
             System.out.println("1. Cadastrar Usuário");
             System.out.println("2. Listar Usuários");
-            System.out.println("0. Sair");
+            System.out.println("0. Voltar");
             int opcao = scanner.nextInt();
             scanner.nextLine();
 
@@ -33,31 +31,39 @@ public class UsuarioController {
 
             switch (opcao) {
                 case 1:
-                    System.out.println("Nome:");
-                    String nome = scanner.nextLine();
-                    System.out.println("Email:");
-                    String email = scanner.nextLine();
-                    System.out.println("Login:");
-                    String login = scanner.nextLine();
-                    System.out.println("Senha:");
-                    String senha = scanner.nextLine();
-
-                    Usuario usuario = new Usuario();
-                    usuario.setNome(nome);
-                    usuario.setEmail(email);
-                    usuario.setLogin(login);
-                    usuario.setSenha(senha);
-
-                    usuarioService.save(usuario);
-                    System.out.println("Usuário cadastrado com sucesso!");
+                    cadastrarUsuario(scanner);
                     break;
                 case 2:
-                    List<Usuario> usuarios = usuarioService.findAll();
-                    usuarios.forEach(u -> System.out.println(u.getNome()));
+                    listarUsuarios();
                     break;
                 default:
                     System.out.println("Opção inválida.");
             }
         }
+    }
+
+    private void cadastrarUsuario(Scanner scanner) {
+        System.out.println("Nome:");
+        String nome = scanner.nextLine();
+        System.out.println("Email:");
+        String email = scanner.nextLine();
+        System.out.println("Login:");
+        String login = scanner.nextLine();
+        System.out.println("Senha:");
+        String senha = scanner.nextLine();
+
+        Usuario usuario = new Usuario();
+        usuario.setNome(nome);
+        usuario.setEmail(email);
+        usuario.setLogin(login);
+        usuario.setSenha(senha);
+
+        usuarioService.save(usuario);
+        System.out.println("Usuário cadastrado com sucesso!");
+    }
+
+    private void listarUsuarios() {
+        List<Usuario> usuarios = usuarioService.findAll();
+        usuarios.forEach(u -> System.out.println(u.getId() + " - " + u.getNome()));
     }
 }

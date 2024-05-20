@@ -1,5 +1,6 @@
 package com.ifgoiano.biblioteca.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,11 +20,12 @@ public class Livro {
     private int anoPub;
     private String isbn;
     // Campo para saber se o livro está emprestado ou não
+    @Column(nullable = false)
     private boolean emprestado;
 
     @OneToOne
     private Resenha resenha;
-
+    
     public Long getId() {
         return id;
     }

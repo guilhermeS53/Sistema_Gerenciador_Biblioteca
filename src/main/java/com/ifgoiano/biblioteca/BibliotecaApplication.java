@@ -34,14 +34,17 @@ public class BibliotecaApplication implements CommandLineRunner {
             int opcao = scanner.nextInt();
             scanner.nextLine();
 
-            if (opcao == 0) break;
+            if (opcao == 0) {
+                System.out.println("Encerrando o sistema...");
+                break;
+            }
 
             switch (opcao) {
                 case 1:
-                    usuarioController.run();
+                    usuarioController.run(scanner);
                     break;
                 case 2:
-                    livroController.run();
+                    livroController.run(scanner);
                     break;
                 default:
                     System.out.println("Opção inválida!");
