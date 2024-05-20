@@ -16,7 +16,6 @@ public class BibliotecaApplication implements CommandLineRunner {
 
     @Autowired
     private UsuarioController usuarioController;
-
     @Autowired
     private LivroController livroController;
 
@@ -28,7 +27,7 @@ public class BibliotecaApplication implements CommandLineRunner {
     public void run(String... args) throws Exception {
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            System.out.println("Escolha uma entidade para gerenciar:");
+            System.out.println("Escolha: 1 para Gerenciar Usuários ou 2 para Gerenciar Livros:");
             System.out.println("1. Usuários");
             System.out.println("2. Livros");
             System.out.println("0. Sair");
@@ -45,8 +44,9 @@ public class BibliotecaApplication implements CommandLineRunner {
                     livroController.run();
                     break;
                 default:
-                    System.out.println("Opção inválida.");
+                    System.out.println("Opção inválida!");
             }
         }
+        scanner.close();
     }
 }

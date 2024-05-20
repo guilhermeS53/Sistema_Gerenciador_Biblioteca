@@ -1,7 +1,5 @@
 package com.ifgoiano.biblioteca.model;
 
-import java.util.List;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,6 +18,8 @@ public class Livro {
     private String autor;
     private int anoPub;
     private String isbn;
+    // Campo para saber se o livro está emprestado ou não
+    private boolean emprestado;
 
     @OneToOne
     private Resenha resenha;
@@ -63,4 +63,13 @@ public class Livro {
     public void setIsbn(String isbn) {
         this.isbn = isbn;
     }
+
+    public boolean isEmprestado() {
+        return emprestado;
+    }
+
+    public void setEmprestado(boolean emprestado) {
+        this.emprestado = emprestado;
+    }
+
 }

@@ -23,6 +23,10 @@ public class LivroService {
         return livroRepository.findById(id).orElse(null);
     }
 
+    public List<Livro> findByTituloContaining(String titulo) {
+        return livroRepository.findByTituloContainingIgnoreCase(titulo);
+    }
+
     public Livro save(Livro livro) {
         return livroRepository.save(livro);
     }
@@ -31,4 +35,33 @@ public class LivroService {
         livroRepository.deleteById(id);
     }
 
+    public Livro updateLivro(Long id, Livro livroDetails) {
+        Livro livro = findById(id);
+        if (livro != null) {
+            livro.setTitulo(livroDetails.getTitulo());
+            livro.setAutor(livroDetails.getAutor());
+            livro.setAnoPub(livroDetails.getAnoPub());
+            livro.setIsbn(livroDetails.getIsbn());
+            return save(livro);
+        }
+        return null;
+    }
+
+    public Livro emprestarLivro(Long id) {
+        Livro livro = findById(id);
+        if (livro != null && !livro.isEmprestado()) {
+            livro.setEmprestado(true);
+            return save(livro);
+        }
+        return null;
+    }
+
+    public Livro devolverLivro(Long id) {
+        Livro livro = findById(id);
+        if (livro != null && livro.isEmprestado()) {
+            livro.setEmprestado(false);
+            return save(livro);
+        }
+        return null;
+    }
 }
