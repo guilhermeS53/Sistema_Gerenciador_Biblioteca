@@ -21,7 +21,7 @@ public class UsuarioController {
     public void run() {
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            System.out.println("Escolha uma opção:");
+            System.out.println("Escolha uma opção abaixo:");
             System.out.println("1. Cadastrar Usuário");
             System.out.println("2. Listar Usuários");
             System.out.println("0. Sair");

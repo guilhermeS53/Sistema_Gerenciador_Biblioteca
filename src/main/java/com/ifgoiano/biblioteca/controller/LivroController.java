@@ -25,13 +25,14 @@ public class LivroController {
     public void run() {
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            System.out.println("Escolha uma opção:");
+            System.out.println("Escolha uma opção abaixo:");
             System.out.println("1. Cadastrar Livro");
             System.out.println("2. Listar Livros");
             System.out.println("0. Sair");
             int opcao = scanner.nextInt();
             scanner.nextLine();
 
+            // Caso o usuário tecle 0, o programa encerrará
             if (opcao == 0) break;
 
             switch (opcao) {
@@ -40,12 +41,15 @@ public class LivroController {
                     String titulo = scanner.nextLine();
                     System.out.println("Autor:");
                     String autor = scanner.nextLine();
+                    System.out.println("Ano de Publicação:");
+                    int anoPub = Integer.parseInt(scanner.nextLine());
                     System.out.println("ISBN:");
                     String isbn = scanner.nextLine();
 
                     Livro livro = new Livro();
                     livro.setTitulo(titulo);
                     livro.setAutor(autor);
+                    livro.setAnoPub(anoPub);
                     livro.setIsbn(isbn);
 
                     livroService.save(livro);
