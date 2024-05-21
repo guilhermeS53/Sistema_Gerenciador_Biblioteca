@@ -18,7 +18,6 @@ public class Usuario {
     private String email;
     private String login;
     private String senha;
-    private int quantidadeEmprestimos;
 
     public Long getId() {
         return id;
@@ -58,14 +57,6 @@ public class Usuario {
 
     public void setSenha(String senha) {
         this.senha = senha;
-    }
-
-    public int getQuantidadeEmprestimos() {
-        return quantidadeEmprestimos;
-    }
-
-    public void setQuantidadeEmprestimos(int quantidadeEmprestimos) {
-        this.quantidadeEmprestimos = quantidadeEmprestimos;
     }
 
 }
