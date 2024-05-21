@@ -4,12 +4,15 @@ Objetivo: Implementar um sistema simples em Java, que apresenta via linha de com
 
 - Cadastrar Livro :white_check_mark:
 - Cadastrar Usuário :white_check_mark:
+- Atualizar Usuário :white_check_mark:
+- Excluir Usuário :white_check_mark:
+- Acesso simples por login e senha com autenticação :white_check_mark:
 - Listar Livros :white_check_mark:
 - Buscar Livro :white_check_mark:
-- Atualizar Livro :x:
-- Excluir Livro :x:
-- Emprestar Livro :x:
-- Devolver Livro :x:
+- Atualizar Livro :white_check_mark:
+- Excluir Livro :white_check_mark:
+- Emprestar Livro :white_check_mark:
+- Devolver Livro :white_check_mark:
 
 <h1> ⚙  Precondições do Sistema  </h1>
 
