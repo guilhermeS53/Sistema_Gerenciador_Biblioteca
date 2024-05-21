@@ -26,11 +26,9 @@ public class UsuarioController {
             System.out.println("4. Excluir Usuário");
             System.out.println("5. Login");
             System.out.println("0. Voltar");
-            int opcao = scanner.nextInt();
-            scanner.nextLine();
+            int opcao = Integer.parseInt(scanner.nextLine());
 
-            if (opcao == 0)
-                break;
+            if (opcao == 0) break;
 
             switch (opcao) {
                 case 1:
@@ -81,8 +79,7 @@ public class UsuarioController {
 
     private void atualizarUsuario(Scanner scanner) {
         System.out.println("Digite o ID do usuário que deseja atualizar:");
-        Long id = scanner.nextLong();
-        scanner.nextLine();
+        Long id = Long.parseLong(scanner.nextLine());
 
         Usuario usuario = usuarioService.findById(id);
         if (usuario == null) {
@@ -110,8 +107,7 @@ public class UsuarioController {
 
     private void excluirUsuario(Scanner scanner) {
         System.out.println("Digite o ID do usuário que deseja excluir:");
-        Long id = scanner.nextLong();
-        scanner.nextLine();
+        Long id = Long.parseLong(scanner.nextLine());
 
         usuarioService.deleteById(id);
         System.out.println("Usuário excluído com sucesso!");
