@@ -11,7 +11,6 @@ import java.time.LocalDate;
 
 // Criação da Entidade Empréstimo na lógica de negócio em Model
 @Entity
-
 public class Emprestimo {
 
     @Id
@@ -19,7 +18,7 @@ public class Emprestimo {
     private Long id;
     private LocalDate dataEmprestimo;
     private LocalDate dataDevolucao;
-    private String status;
+    private StatusEmprestimo status;
     private Double multa;
 
     @ManyToOne
@@ -53,11 +52,11 @@ public class Emprestimo {
         this.dataDevolucao = dataDevolucao;
     }
 
-    public String getStatus() {
+    public StatusEmprestimo getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(StatusEmprestimo status) {
         this.status = status;
     }
 
@@ -84,5 +83,4 @@ public class Emprestimo {
     public void setLivro(Livro livro) {
         this.livro = livro;
     }
-
 }
