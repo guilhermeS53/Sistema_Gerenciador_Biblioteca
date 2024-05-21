@@ -24,6 +24,7 @@ public class UsuarioController {
             System.out.println("2. Listar Usuários");
             System.out.println("3. Atualizar Usuário");
             System.out.println("4. Excluir Usuário");
+            System.out.println("5. Login");
             System.out.println("0. Voltar");
             int opcao = scanner.nextInt();
             scanner.nextLine();
@@ -43,6 +44,9 @@ public class UsuarioController {
                     break;
                 case 4:
                     excluirUsuario(scanner);
+                    break;
+                case 5:
+                    login(scanner);
                     break;
                 default:
                     System.out.println("Opção inválida.");
@@ -111,5 +115,19 @@ public class UsuarioController {
 
         usuarioService.deleteById(id);
         System.out.println("Usuário excluído com sucesso!");
+    }
+
+    public void login(Scanner scanner) {
+        System.out.println("Login:");
+        String login = scanner.nextLine();
+        System.out.println("Senha:");
+        String senha = scanner.nextLine();
+
+        Usuario usuario = usuarioService.authenticate(login, senha);
+        if (usuario != null) {
+            System.out.println("Login realizado com sucesso! Bem-vindo, " + usuario.getNome() + "!");
+        } else {
+            System.out.println("Login ou senha incorretos.");
+        }
     }
 }

@@ -29,4 +29,8 @@ public class UsuarioService {
     public void deleteById(Long id) {
         usuarioRepository.deleteById(id);
     }
+
+    public Usuario authenticate(String login, String senha) {
+        return usuarioRepository.findByLoginAndSenha(login, senha).orElse(null);
+    }
 }
