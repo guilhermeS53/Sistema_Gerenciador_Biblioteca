@@ -67,7 +67,7 @@ public class LivroService implements ILivroService {
     public Livro devolverLivro(Long id) {
         Livro livro = findById(id);
         if (livro != null && livro.isEmprestado()) {
-            livro.setEmprestado(false); 
+            livro.setEmprestado(false);
             return save(livro);
         }
         return null;

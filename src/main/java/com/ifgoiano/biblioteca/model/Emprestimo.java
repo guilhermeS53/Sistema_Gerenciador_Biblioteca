@@ -26,6 +26,7 @@ public class Emprestimo {
     private Usuario usuario;
 
     @ManyToOne
+    @JoinColumn(name = "livro_id")
     private Livro livro;
 
     public Long getId() {

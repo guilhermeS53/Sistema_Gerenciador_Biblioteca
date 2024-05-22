@@ -5,11 +5,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
 
 // Criação da Entidade Livro na lógica de negócio em Model
 @Entity
-
 public class Livro {
 
     @Id
@@ -23,9 +21,6 @@ public class Livro {
     @Column(nullable = false)
     private boolean emprestado;
 
-    @OneToOne
-    private Resenha resenha;
-    
     public Long getId() {
         return id;
     }
