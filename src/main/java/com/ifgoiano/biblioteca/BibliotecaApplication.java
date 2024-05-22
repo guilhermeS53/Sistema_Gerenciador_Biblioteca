@@ -8,6 +8,7 @@ import org.springframework.boot.SpringApplication;
 
 import com.ifgoiano.biblioteca.controller.LivroController;
 import com.ifgoiano.biblioteca.controller.UsuarioController;
+import com.ifgoiano.biblioteca.controller.EmprestimoController;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -16,8 +17,12 @@ public class BibliotecaApplication implements CommandLineRunner {
 
     @Autowired
     private UsuarioController usuarioController;
+
     @Autowired
     private LivroController livroController;
+
+    @Autowired
+    private EmprestimoController emprestimoController;
 
     public static void main(String[] args) {
         SpringApplication.run(BibliotecaApplication.class, args);
@@ -27,10 +32,11 @@ public class BibliotecaApplication implements CommandLineRunner {
     public void run(String... args) throws Exception {
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            System.out.println("Escolha: 1 para Gerenciar Usuários ou 2 para Gerenciar Livros:");
-            System.out.println("1. Usuários");
-            System.out.println("2. Livros");
-            System.out.println("3. Login");
+            System.out.println("Escolha uma opção:");
+            System.out.println("1. Gerenciar Usuários");
+            System.out.println("2. Gerenciar Livros");
+            System.out.println("3. Gerenciar Empréstimos");
+            System.out.println("4. Login");
             System.out.println("0. Sair");
             int opcao = scanner.nextInt();
             scanner.nextLine();
@@ -48,6 +54,9 @@ public class BibliotecaApplication implements CommandLineRunner {
                     livroController.run(scanner);
                     break;
                 case 3:
+                    emprestimoController.run(scanner);
+                    break;
+                case 4:
                     usuarioController.login(scanner);
                     break;
                 default:

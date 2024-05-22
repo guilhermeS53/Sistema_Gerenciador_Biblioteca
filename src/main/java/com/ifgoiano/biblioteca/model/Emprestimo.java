@@ -29,6 +29,8 @@ public class Emprestimo {
     @JoinColumn(name = "livro_id")
     private Livro livro;
 
+    // Getters e Setters
+
     public Long getId() {
         return id;
     }
