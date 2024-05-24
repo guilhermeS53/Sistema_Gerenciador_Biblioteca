@@ -2,9 +2,9 @@
 
 **Objetivo: Implementar um sistema simples em Java que apresenta via linha de comando (CLI) um menu de Biblioteca com as opções**:
 
-<h1> Funcionalidades Principais: <h1>
+<h1> Funcionalidades Principais: </h1>
 
-## Livros
+<h3> Livros </h3>
 - Cadastrar Livro :white_check_mark:
 - Listar Livros :white_check_mark:
 - Buscar Livro (por ID ou por nome) :white_check_mark:
@@ -13,14 +13,14 @@
 - Emprestar Livro :white_check_mark:
 - Devolver Livro :white_check_mark:
 
- ## Usuários
+ <h3> Usuários </h3>
 - Cadastrar Usuário :white_check_mark:
 - Listar Usuários :white_check_mark:
 - Atualizar Usuário :white_check_mark:
 - Excluir Usuário :white_check_mark:
 - Acesso Simples por Login e Senha com Autenticação :white_check_mark:
 
-## Empréstimos
+<h3> Empréstimos </h3>
 - Registrar Empréstimo :white_check_mark:
 - Registrar Devolução :white_check_mark:
 - Listar Empréstimos (através do enum ATIVO, DEVOLVIDO, ATRASADO) :white_check_mark:
@@ -37,7 +37,7 @@
 - Gerenciador de Pacotes Maven
 - Spring
 
-<h1> Estrutura do Projeto com Maven <h1>
+<h1> Estrutura do Projeto com Maven </h1>
 
 O Projeto de Biblioteca segue a estrutura padrão do Maven:
 <pre>
