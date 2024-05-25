@@ -18,6 +18,7 @@ public class CategoriaController {
         while (true) {
             System.out.println("Gerenciar Categorias:");
             System.out.println("1. Listar Categorias");
+            System.out.println("0. Voltar");
             int opcao = Integer.parseInt(scanner.nextLine());
 
             if (opcao == 0)
