@@ -31,6 +31,7 @@ public class LivroController {
             System.out.println("2. Adicionar Livro");
             System.out.println("3. Atualizar Livro");
             System.out.println("4. Deletar Livro");
+            System.out.println("5. Buscar Livro por ID");
             System.out.println("0. Voltar");
             int opcao = Integer.parseInt(scanner.nextLine());
 
@@ -50,6 +51,9 @@ public class LivroController {
                 case 4:
                     deletarLivro(scanner);
                     break;
+                case 5:
+                    buscarLivroPorId(scanner);
+                    break;
                 default:
                     System.out.println("Opção inválida.");
             }
@@ -64,10 +68,29 @@ public class LivroController {
             System.out.println("Ano de Publicação: " + l.getAnoPub());
             System.out.println("ISBN: " + l.getIsbn());
             System.out.println("Emprestado: " + l.isEmprestado());
-            System.out
-                    .println("Categoria: " + (l.getCategoria() != null ? l.getCategoria().getNome() : "Sem Categoria"));
+            System.out.println("Categoria: " + (l.getCategoria() != null ? l.getCategoria().getNome() : "Sem Categoria"));
             System.out.println();
         });
+    }
+
+    private void buscarLivroPorId(Scanner scanner) {
+        System.out.println("Digite o ID do livro:");
+        Long id = Long.parseLong(scanner.nextLine());
+
+        Livro livro = livroService.findById(id);
+        if (livro != null) {
+            livroService.findAll().forEach(l -> {
+            System.out.println("ID: " + l.getId());
+            System.out.println("Título: " + l.getTitulo());
+            System.out.println("Autor: " + l.getAutor());
+            System.out.println("Ano de Publicação: " + l.getAnoPub());
+            System.out.println("ISBN: " + l.getIsbn());
+            System.out.println("Categoria: " + (l.getCategoria() != null ? l.getCategoria().getNome() : "Sem Categoria"));
+            System.out.println();
+        });
+    } else {
+            System.out.println("Livro não encontrado.");
+        }
     }
 
     private void adicionarLivro(Scanner scanner) {
