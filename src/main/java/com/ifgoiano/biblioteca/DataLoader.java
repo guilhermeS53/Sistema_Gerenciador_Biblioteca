@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +15,7 @@ import com.ifgoiano.biblioteca.model.Categoria;
 import com.ifgoiano.biblioteca.service.CategoriaService;
 
 @Component
+@Order(1) // Prioriza a execução para carregar previamente algumas categorias no sistema
 public class DataLoader implements CommandLineRunner {
     @Autowired
     private CategoriaService categoriaService;
@@ -33,8 +35,10 @@ public class DataLoader implements CommandLineRunner {
             });
             categorias.forEach(categoriaService::save);
             System.out.println("Categorias carregadas com sucesso!");
+            System.out.println();
         } catch (Exception e) {
             System.out.println("Erro ao carregar categorias: " + e.getMessage());
+            System.out.println();
         }
     }
 }

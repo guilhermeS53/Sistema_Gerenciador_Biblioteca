@@ -12,8 +12,10 @@ import com.ifgoiano.biblioteca.controller.CategoriaController;
 import com.ifgoiano.biblioteca.controller.EmprestimoController;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.core.annotation.Order;
 
 @SpringBootApplication
+@Order(2) // Para execução após o DataLoader
 public class BibliotecaApplication implements CommandLineRunner {
 
     @Autowired
@@ -37,17 +39,19 @@ public class BibliotecaApplication implements CommandLineRunner {
         Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.println("Escolha uma opção:");
+            System.out.println();
             System.out.println("1. Gerenciar Usuários");
             System.out.println("2. Gerenciar Livros");
             System.out.println("3. Gerenciar Empréstimos");
             System.out.println("4. Gerenciar Categorias");
             System.out.println("5. Login");
             System.out.println("0. Sair");
+            System.out.println();
             int opcao = scanner.nextInt();
             scanner.nextLine();
 
             if (opcao == 0) {
-                System.out.println("Encerrando o sistema...");
+                System.out.println("Encerrando Sistema de Biblioteca...");
                 break;
             }
 
@@ -68,7 +72,7 @@ public class BibliotecaApplication implements CommandLineRunner {
                     usuarioController.login(scanner);
                     break;
                 default:
-                    System.out.println("Opção inválida!");
+                    System.out.println("Opção inválida! Tente novamente!");
             }
         }
         scanner.close();
