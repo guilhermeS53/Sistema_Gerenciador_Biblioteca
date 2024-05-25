@@ -1,6 +1,5 @@
 package com.ifgoiano.biblioteca.controller;
 
-import java.util.List;
 import java.util.Scanner;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import com.ifgoiano.biblioteca.model.Categoria;
 import com.ifgoiano.biblioteca.model.Livro;
 import com.ifgoiano.biblioteca.service.CategoriaService;
-import com.ifgoiano.biblioteca.service.ILivroService;
 import com.ifgoiano.biblioteca.service.LivroService;
 
 // Controlador para interação com os livros da biblioteca
@@ -23,6 +21,9 @@ public class LivroController {
 
     @Autowired
     private CategoriaService categoriaService;
+
+    @Autowired
+    private CategoriaController categoriaController;
 
     public void run(Scanner scanner) {
         while (true) {
@@ -102,13 +103,20 @@ public class LivroController {
         int anoPub = Integer.parseInt(scanner.nextLine());
         System.out.println("ISBN do Livro:");
         String isbn = scanner.nextLine();
-        System.out.println("Nome da Categoria:");
-        String categoriaNome = scanner.nextLine();
 
-        Categoria categoria = categoriaService.findByNome(categoriaNome);
-        if (categoria == null) {
-            System.out.println("Categoria não encontrada.");
-            return;
+        categoriaController.listarCategorias();
+        System.out.println("ID da Categoria: (Caso não encontre a que deseja, informe 0 para adicionar uma nova)");
+        Long categoriaId = Long.parseLong(scanner.nextLine());
+
+        Categoria categoria;
+        if (categoriaId == 0) {
+            categoria = adicionarNovaCategoria(scanner);
+        } else {
+            categoria = categoriaService.findById(categoriaId);
+            if (categoria == null) {
+                System.out.println("Categoria não encontrada. Que tal adicionar uma nova?");
+                categoria = adicionarNovaCategoria(scanner);
+            }
         }
 
         Livro livro = new Livro();
@@ -119,6 +127,14 @@ public class LivroController {
         livro.setCategoria(categoria);
         livroService.save(livro);
         System.out.println("Livro adicionado com sucesso!");
+    }
+
+    private Categoria adicionarNovaCategoria(Scanner scanner) {
+        System.out.println("Nome da nova Categoria:");
+        String nomeCategoria = scanner.nextLine();
+        Categoria novaCategoria = new Categoria(); 
+        novaCategoria.setNome(nomeCategoria);
+        return categoriaService.save(novaCategoria);
     }
 
     private void atualizarLivro(Scanner scanner) {
@@ -137,10 +153,12 @@ public class LivroController {
         int anoPub = Integer.parseInt(scanner.nextLine());
         System.out.println("Novo ISBN do Livro:");
         String isbn = scanner.nextLine();
-        System.out.println("Novo Nome da Categoria:");
-        String categoriaNome = scanner.nextLine();
 
-        Categoria categoria = categoriaService.findByNome(categoriaNome);
+        categoriaController.listarCategorias();
+        System.out.println("ID da Nova Categoria:");
+        Long categoriaId = Long.parseLong(scanner.nextLine());
+
+        Categoria categoria = categoriaService.findById(categoriaId);
         if (categoria == null) {
             System.out.println("Categoria não encontrada.");
             return;
