@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Controller;
 
+import com.ifgoiano.biblioteca.model.Categoria;
 import com.ifgoiano.biblioteca.model.Livro;
+import com.ifgoiano.biblioteca.service.CategoriaService;
 import com.ifgoiano.biblioteca.service.ILivroService;
 import com.ifgoiano.biblioteca.service.LivroService;
 
@@ -17,171 +19,123 @@ import com.ifgoiano.biblioteca.service.LivroService;
 public class LivroController {
 
     @Autowired
-    private ILivroService livroService;
+    private LivroService livroService;
+
+    @Autowired
+    private CategoriaService categoriaService;
 
     public void run(Scanner scanner) {
         while (true) {
-            try {
-                System.out.println("Gerenciar Livros:");
-                System.out.println("1. Cadastrar Livro");
-                System.out.println("2. Listar Livros");
-                System.out.println("3. Buscar Livro por ID");
-                System.out.println("4. Buscar Livro por Nome");
-                System.out.println("5. Atualizar Livro");
-                System.out.println("6. Excluir Livro");
-                System.out.println("7. Emprestar Livro");
-                System.out.println("8. Devolver Livro");
-                System.out.println("0. Voltar");
-                int opcao = Integer.parseInt(scanner.nextLine());
+            System.out.println("Gerenciar Livros:");
+            System.out.println("1. Listar Livros");
+            System.out.println("2. Adicionar Livro");
+            System.out.println("3. Atualizar Livro");
+            System.out.println("4. Deletar Livro");
+            System.out.println("0. Voltar");
+            int opcao = Integer.parseInt(scanner.nextLine());
 
-                if (opcao == 0) break;
+            if (opcao == 0)
+                break;
 
-                switch (opcao) {
-                    case 1:
-                        cadastrarLivro(scanner);
-                        break;
-                    case 2:
-                        listarLivros();
-                        break;
-                    case 3:
-                        buscarLivroPorId(scanner);
-                        break;
-                    case 4:
-                        buscarLivroPorNome(scanner);
-                        break;
-                    case 5:
-                        atualizarLivro(scanner);
-                        break;
-                    case 6:
-                        excluirLivro(scanner);
-                        break;
-                    case 7:
-                        emprestarLivro(scanner);
-                        break;
-                    case 8:
-                        devolverLivro(scanner);
-                        break;
-                    default:
-                        System.out.println("Opção inválida.");
-                }
-            } catch (Exception e) {
-                System.out.println("Erro: " + e.getMessage());
+            switch (opcao) {
+                case 1:
+                    listarLivros();
+                    break;
+                case 2:
+                    adicionarLivro(scanner);
+                    break;
+                case 3:
+                    atualizarLivro(scanner);
+                    break;
+                case 4:
+                    deletarLivro(scanner);
+                    break;
+                default:
+                    System.out.println("Opção inválida.");
             }
         }
     }
 
-    private void cadastrarLivro(Scanner scanner) {
-        System.out.println("Título:");
+    private void listarLivros() {
+        livroService.findAll().forEach(l -> {
+            System.out.println("ID: " + l.getId());
+            System.out.println("Título: " + l.getTitulo());
+            System.out.println("Autor: " + l.getAutor());
+            System.out.println("Ano de Publicação: " + l.getAnoPub());
+            System.out.println("ISBN: " + l.getIsbn());
+            System.out.println("Emprestado: " + l.isEmprestado());
+            System.out
+                    .println("Categoria: " + (l.getCategoria() != null ? l.getCategoria().getNome() : "Sem Categoria"));
+            System.out.println();
+        });
+    }
+
+    private void adicionarLivro(Scanner scanner) {
+        System.out.println("Título do Livro:");
         String titulo = scanner.nextLine();
-        System.out.println("Autor:");
+        System.out.println("Autor do Livro:");
         String autor = scanner.nextLine();
         System.out.println("Ano de Publicação:");
         int anoPub = Integer.parseInt(scanner.nextLine());
-        System.out.println("ISBN:");
+        System.out.println("ISBN do Livro:");
         String isbn = scanner.nextLine();
+        System.out.println("Nome da Categoria:");
+        String categoriaNome = scanner.nextLine();
+
+        Categoria categoria = categoriaService.findByNome(categoriaNome);
+        if (categoria == null) {
+            System.out.println("Categoria não encontrada.");
+            return;
+        }
 
         Livro livro = new Livro();
         livro.setTitulo(titulo);
         livro.setAutor(autor);
         livro.setAnoPub(anoPub);
         livro.setIsbn(isbn);
-
+        livro.setCategoria(categoria);
         livroService.save(livro);
-        System.out.println("Livro cadastrado com sucesso!");
-    }
-
-    private void listarLivros() {
-        List<Livro> livros = livroService.findAll();
-        livros.forEach(l -> System.out.println(l.getId() + " - " + l.getTitulo()));
-    }
-
-    private void buscarLivroPorId(Scanner scanner) {
-        System.out.println("Digite o ID do livro:");
-        Long id = Long.parseLong(scanner.nextLine());
-
-        Livro livro = livroService.findById(id);
-        if (livro != null) {
-            System.out.println("ID: " + livro.getId());
-            System.out.println("Título: " + livro.getTitulo());
-            System.out.println("Autor: " + livro.getAutor());
-            System.out.println("Ano de Publicação: " + livro.getAnoPub());
-            System.out.println("ISBN: " + livro.getIsbn());
-        } else {
-            System.out.println("Livro não encontrado.");
-        }
-    }
-
-    private void buscarLivroPorNome(Scanner scanner) {
-        System.out.println("Digite o nome do livro:");
-        String nome = scanner.nextLine();
-
-        List<Livro> livros = livroService.findByTituloContaining(nome);
-        livros.forEach(l -> System.out.println(l.getId() + " - " + l.getTitulo()));
+        System.out.println("Livro adicionado com sucesso!");
     }
 
     private void atualizarLivro(Scanner scanner) {
-        System.out.println("Digite o ID do livro que deseja atualizar:");
+        System.out.println("ID do Livro a ser atualizado:");
         Long id = Long.parseLong(scanner.nextLine());
-
         Livro livro = livroService.findById(id);
         if (livro == null) {
             System.out.println("Livro não encontrado.");
             return;
         }
-
-        System.out.println("Título (atual: " + livro.getTitulo() + "):");
+        System.out.println("Novo título do Livro:");
         String titulo = scanner.nextLine();
-        System.out.println("Autor (atual: " + livro.getAutor() + "):");
+        System.out.println("Novo autor do Livro:");
         String autor = scanner.nextLine();
-        System.out.println("Ano de Publicação (atual: " + livro.getAnoPub() + "):");
+        System.out.println("Novo ano de Publicação:");
         int anoPub = Integer.parseInt(scanner.nextLine());
-        System.out.println("ISBN (atual: " + livro.getIsbn() + "):");
+        System.out.println("Novo ISBN do Livro:");
         String isbn = scanner.nextLine();
+        System.out.println("Novo Nome da Categoria:");
+        String categoriaNome = scanner.nextLine();
 
-        livro.setTitulo(titulo.isEmpty() ? livro.getTitulo() : titulo);
-        livro.setAutor(autor.isEmpty() ? livro.getAutor() : autor);
-        livro.setAnoPub(anoPub == 0 ? livro.getAnoPub() : anoPub);
-        livro.setIsbn(isbn.isEmpty() ? livro.getIsbn() : isbn);
+        Categoria categoria = categoriaService.findByNome(categoriaNome);
+        if (categoria == null) {
+            System.out.println("Categoria não encontrada.");
+            return;
+        }
 
-        livroService.save(livro);
+        livro.setTitulo(titulo);
+        livro.setAutor(autor);
+        livro.setAnoPub(anoPub);
+        livro.setIsbn(isbn);
+        livro.setCategoria(categoria);
+        livroService.updateLivro(id, livro);
         System.out.println("Livro atualizado com sucesso!");
     }
 
-    private void excluirLivro(Scanner scanner) {
-        System.out.println("Digite o ID do livro que deseja excluir:");
+    private void deletarLivro(Scanner scanner) {
+        System.out.println("ID do Livro a ser deletado:");
         Long id = Long.parseLong(scanner.nextLine());
-
         livroService.deleteById(id);
-        System.out.println("Livro excluído com sucesso!");
-    }
-
-    private void emprestarLivro(Scanner scanner) {
-        System.out.println("Digite o ID do livro que deseja emprestar:");
-        Long id = Long.parseLong(scanner.nextLine());
-
-        Livro livro = livroService.findById(id);
-        if (livro == null) {
-            System.out.println("Livro não encontrado.");
-            return;
-        }
-
-        livro.setEmprestado(true);
-        livroService.save(livro);
-        System.out.println("Livro emprestado com sucesso!");
-    }
-
-    private void devolverLivro(Scanner scanner) {
-        System.out.println("Digite o ID do livro que deseja devolver:");
-        Long id = Long.parseLong(scanner.nextLine());
-
-        Livro livro = livroService.findById(id);
-        if (livro == null) {
-            System.out.println("Livro não encontrado.");
-            return;
-        }
-
-        livro.setEmprestado(false);
-        livroService.save(livro);
-        System.out.println("Livro devolvido com sucesso!");
+        System.out.println("Livro deletado com sucesso!");
     }
 }

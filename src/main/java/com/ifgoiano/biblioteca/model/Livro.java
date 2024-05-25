@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 // Criação da Entidade Livro na lógica de negócio em Model
 @Entity
@@ -17,9 +19,13 @@ public class Livro {
     private String autor;
     private int anoPub;
     private String isbn;
-    // Campo para saber se o livro está emprestado ou não
-    @Column(nullable = false)
     private boolean emprestado;
+
+    @ManyToOne
+    @JoinColumn(name = "categoria_id")
+    private Categoria categoria;
+
+    // Getters and Setters
 
     public Long getId() {
         return id;
@@ -67,6 +73,14 @@ public class Livro {
 
     public void setEmprestado(boolean emprestado) {
         this.emprestado = emprestado;
+    }
+
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
     }
 
 }
