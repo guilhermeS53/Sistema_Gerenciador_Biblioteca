@@ -4,12 +4,6 @@ CREATE TABLE categoria (
     nome VARCHAR(255) NOT NULL
 );
 
--- Tabela de Autores
-CREATE TABLE autor (
-    id SERIAL PRIMARY KEY,
-    nome VARCHAR(255) NOT NULL
-);
-
 -- Tabela de Usuários
 CREATE TABLE usuario (
     id SERIAL PRIMARY KEY,
@@ -21,35 +15,27 @@ CREATE TABLE usuario (
 -- Tabela de Livros
 CREATE TABLE livro (
     id SERIAL PRIMARY KEY,
+    titulo VARCHAR(255) NOT NULL,
+    autor VARCHAR(255) NOT NULL,
+    anoPub INT,
     isbn VARCHAR(13) NOT NULL UNIQUE,
-    nome VARCHAR(255) NOT NULL,
-    quantidade INTEGER,
-    ano INTEGER,
-    id_autor INTEGER,
-    id_editora INTEGER,
-    id_categoria INTEGER,
-    FOREIGN KEY(id_autor) REFERENCES autor (id) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY(id_editora) REFERENCES editora (id) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY(id_categoria) REFERENCES categoria (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    emprestado BOOLEAN DEFAULT FALSE,
+    categoria_id INT,
+    FOREIGN KEY (categoria_id) REFERENCES categoria (id) ON DELETE SET NULL
 );
 
 -- Tabela de Empréstimos
-CREATE DOMAIN devolucao AS VARCHAR CHECK (VALUE = 'Devolvido' OR VALUE = 'Pendente');
-
 CREATE TABLE emprestimo (
     id SERIAL PRIMARY KEY,
-    data_emprestimo DATE NOT NULL,
-    data_prev_devolucao DATE GENERATED ALWAYS AS 
-    (data_emprestimo + INTERVAL '15 days') STORED,
-    data_real_devolucao DATE,
-    devolucao VARCHAR(11),
-    multa INTEGER DEFAULT 0,
+    dataEmprestimo DATE NOT NULL,
+    dataDevolucao DATE,
+    status VARCHAR(255),
+    multa DOUBLE PRECISION,
     usuario_id INTEGER,
     livro_id INTEGER,
-    FOREIGN KEY(usuario_id) REFERENCES usuario (id) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY(livro_id) REFERENCES livro (id) ON DELETE CASCADE ON UPDATE CASCADE	
+    FOREIGN KEY (usuario_id) REFERENCES usuario (id),
+    FOREIGN KEY (livro_id) REFERENCES livro (id)
 );
 
--- Adição da chave estrangeira de avaliações 
-ALTER TABLE avaliacao
-ADD FOREIGN KEY (livro_id) REFERENCES livro(id) ON DELETE CASCADE;
+-- Criação o ENUM com ATIVO, DEVOLVIDO, ATRASADO
+CREATE TYPE status_emprestimo AS ENUM ('ATIVO', 'DEVOLVIDO', 'ATRASADO');
