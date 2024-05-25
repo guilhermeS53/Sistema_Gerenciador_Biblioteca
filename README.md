@@ -7,7 +7,7 @@
 Livros
 - Cadastrar Livro :white_check_mark:
 - Listar Livros :white_check_mark:
-- Buscar Livro (por ID ou por nome) :white_check_mark:
+- Buscar Livro (por ID) :white_check_mark:
 - Atualizar Livro :white_check_mark:
 - Excluir Livro :white_check_mark:
 - Emprestar Livro :white_check_mark:
