@@ -4,7 +4,7 @@
 
 <h1> Funcionalidades Principais: </h1>
 
-<h3> Livros </h3>
+Livros
 - Cadastrar Livro :white_check_mark:
 - Listar Livros :white_check_mark:
 - Buscar Livro (por ID ou por nome) :white_check_mark:
@@ -13,14 +13,14 @@
 - Emprestar Livro :white_check_mark:
 - Devolver Livro :white_check_mark:
 
- <h3> Usuários </h3>
+ Usuários
 - Cadastrar Usuário :white_check_mark:
 - Listar Usuários :white_check_mark:
 - Atualizar Usuário :white_check_mark:
 - Excluir Usuário :white_check_mark:
 - Acesso Simples por Login e Senha com Autenticação :white_check_mark:
 
-<h3> Empréstimos </h3>
+Empréstimos
 - Registrar Empréstimo :white_check_mark:
 - Registrar Devolução :white_check_mark:
 - Listar Empréstimos (através do enum ATIVO, DEVOLVIDO, ATRASADO) :white_check_mark:
