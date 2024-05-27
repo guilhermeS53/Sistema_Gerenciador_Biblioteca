@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.ifgoiano.biblioteca.model.ResourceNotFoundException;
 import com.ifgoiano.biblioteca.model.Usuario;
 import com.ifgoiano.biblioteca.repository.UsuarioRepository;
 
@@ -26,7 +28,8 @@ public class UsuarioService implements IUsuarioService {
 
     @Override
     public Usuario findById(Long id) {
-        return usuarioRepository.findById(id).orElse(null);
+        return usuarioRepository.findById(id).orElseThrow(() -> 
+            new ResourceNotFoundException("Usuário não encontrado para o id: " + id));
     }
 
     @Override
@@ -36,6 +39,7 @@ public class UsuarioService implements IUsuarioService {
 
     @Override
     public Usuario authenticate(String login, String senha) {
-        return usuarioRepository.findByLoginAndSenha(login, senha).orElse(null);
+        return usuarioRepository.findByLoginAndSenha(login, senha).orElseThrow(() -> 
+            new ResourceNotFoundException("Usuário não encontrado para o Login: " + login));
     }
 }
