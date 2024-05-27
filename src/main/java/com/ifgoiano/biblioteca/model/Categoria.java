@@ -9,7 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
 @Entity
-public class Categoria {
+public class Categoria {  
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
