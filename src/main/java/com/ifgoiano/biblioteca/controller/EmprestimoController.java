@@ -11,6 +11,7 @@ import com.ifgoiano.biblioteca.model.Emprestimo;
 import com.ifgoiano.biblioteca.service.IEmprestimoService;
 import com.ifgoiano.biblioteca.model.StatusEmprestimo;
 import com.ifgoiano.biblioteca.model.Livro;
+import com.ifgoiano.biblioteca.model.ResourceNotFoundException;
 import com.ifgoiano.biblioteca.model.Usuario;
 import com.ifgoiano.biblioteca.service.ILivroService;
 import com.ifgoiano.biblioteca.service.IUsuarioService;
@@ -36,7 +37,8 @@ public class EmprestimoController {
             System.out.println("0. Voltar");
             int opcao = Integer.parseInt(scanner.nextLine());
 
-            if (opcao == 0) break;
+            if (opcao == 0)
+                break;
 
             switch (opcao) {
                 case 1:
@@ -55,63 +57,69 @@ public class EmprestimoController {
     }
 
     private void registrarEmprestimo(Scanner scanner) {
-        System.out.println("ID do Livro:");
-        Long livroId = Long.parseLong(scanner.nextLine());
-        Livro livro = livroService.findById(livroId);
-        if (livro == null || livro.isEmprestado()) {
-            System.out.println("Livro indisponível.");
-            return;
+        try {
+            System.out.println("ID do Livro:");
+            Long livroId = Long.parseLong(scanner.nextLine());
+            Livro livro = livroService.findById(livroId);
+            if (livro.isEmprestado()) {
+                System.out.println("Livro indisponível.");
+                return;
+            }
+
+            System.out.println("ID do Usuário:");
+            Long usuarioId = Long.parseLong(scanner.nextLine());
+            Usuario usuario = usuarioService.findById(usuarioId);
+
+            Emprestimo emprestimo = new Emprestimo();
+            emprestimo.setLivro(livro);
+            emprestimo.setUsuario(usuario);
+            emprestimo.setDataEmprestimo(LocalDate.now());
+            emprestimo.setStatus(StatusEmprestimo.ATIVO);
+
+            livro.setEmprestado(true);
+            emprestimoService.save(emprestimo);
+            livroService.save(livro);
+
+            System.out.println("Empréstimo registrado com sucesso!");
+        } catch (ResourceNotFoundException ex) {
+            System.out.println(ex.getMessage());
+        } catch (Exception ex) {
+            System.out.println("Erro ao registrar empréstimo: " + ex.getMessage());
         }
-
-        System.out.println("ID do Usuário:");
-        Long usuarioId = Long.parseLong(scanner.nextLine());
-        Usuario usuario = usuarioService.findById(usuarioId);
-        if (usuario == null) {
-            System.out.println("Usuário não encontrado.");
-            return;
-        }
-
-        Emprestimo emprestimo = new Emprestimo();
-        emprestimo.setLivro(livro);
-        emprestimo.setUsuario(usuario);
-        emprestimo.setDataEmprestimo(LocalDate.now());
-        emprestimo.setStatus(StatusEmprestimo.ATIVO);
-
-        livro.setEmprestado(true);
-        emprestimoService.save(emprestimo);
-        livroService.save(livro);
-
-        System.out.println("Empréstimo registrado com sucesso!");
     }
 
     private void registrarDevolucao(Scanner scanner) {
-        System.out.println("ID do Empréstimo:");
-        Long emprestimoId = Long.parseLong(scanner.nextLine());
-        Emprestimo emprestimo = emprestimoService.findById(emprestimoId);
-        if (emprestimo == null || emprestimo.getStatus() == StatusEmprestimo.DEVOLVIDO) {
-            System.out.println("Empréstimo não encontrado ou já devolvido.");
-            return;
-        }
+        try {
+            System.out.println("ID do Empréstimo:");
+            Long emprestimoId = Long.parseLong(scanner.nextLine());
+            Emprestimo emprestimo = emprestimoService.findById(emprestimoId);
+            if (emprestimo.getStatus() == StatusEmprestimo.DEVOLVIDO) {
+                System.out.println("Empréstimo já devolvido.");
+                return;
+            }
 
-        emprestimo.setDataDevolucao(LocalDate.now());
-        if (emprestimo.getDataDevolucao().isAfter(emprestimo.getDataEmprestimo().plusWeeks(2))) {
-            emprestimo.setStatus(StatusEmprestimo.ATRASADO);
-            emprestimo.setMulta(10.0);  // Exemplo de cálculo de multa
-        } else {
+            emprestimo.setDataDevolucao(LocalDate.now());
             emprestimo.setStatus(StatusEmprestimo.DEVOLVIDO);
+            emprestimo.getLivro().setEmprestado(false);
+
+            emprestimoService.save(emprestimo);
+            livroService.save(emprestimo.getLivro());
+
+            System.out.println("Devolução registrada com sucesso!");
+        } catch (ResourceNotFoundException ex) {
+            System.out.println(ex.getMessage());
+        } catch (Exception ex) {
+            System.out.println("Erro ao registrar devolução: " + ex.getMessage());
         }
-
-        Livro livro = emprestimo.getLivro();
-        livro.setEmprestado(false);
-
-        emprestimoService.save(emprestimo);
-        livroService.save(livro);
-
-        System.out.println("Devolução registrada com sucesso!");
     }
 
     private void listarEmprestimos() {
         List<Emprestimo> emprestimos = emprestimoService.findAll();
-        emprestimos.forEach(e -> System.out.println(e.getId() + " - " + e.getLivro().getTitulo() + " - " + e.getStatus()));
+        for (Emprestimo emprestimo : emprestimos) {
+            System.out.println("ID: " + emprestimo.getId() + " | Livro: " + emprestimo.getLivro().getTitulo() +
+                " | Usuário: " + emprestimo.getUsuario().getNome() + " | Status: " + emprestimo.getStatus() +
+                " | Data Empréstimo: " + emprestimo.getDataEmprestimo() + 
+                (emprestimo.getDataDevolucao() != null ? " | Data Devolução: " + emprestimo.getDataDevolucao() : ""));
+        }
     }
 }
