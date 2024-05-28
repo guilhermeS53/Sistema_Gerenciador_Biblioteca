@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import com.ifgoiano.biblioteca.model.Categoria;
+import com.ifgoiano.biblioteca.model.ResourceNotFoundException;
 import com.ifgoiano.biblioteca.service.CategoriaService;
 
 @Controller
@@ -25,7 +26,8 @@ public class CategoriaController {
             System.out.println("0. Voltar");
             int opcao = Integer.parseInt(scanner.nextLine());
 
-            if (opcao == 0) break;
+            if (opcao == 0)
+                break;
 
             switch (opcao) {
                 case 1:
@@ -69,22 +71,26 @@ public class CategoriaController {
     private void atualizarCategoria(Scanner scanner) {
         System.out.println("ID da Categoria a ser atualizada:");
         Long id = Long.parseLong(scanner.nextLine());
-        Categoria categoria = categoriaService.findById(id);
-        if (categoria == null) {
-            System.out.println("Categoria não encontrada.");
-            return;
+        try {
+            Categoria categoria = categoriaService.findById(id);
+            System.out.println("Novo nome da Categoria:");
+            String nome = scanner.nextLine();
+            categoria.setNome(nome);
+            categoriaService.save(categoria);
+            System.out.println("Categoria atualizada com sucesso!");
+        } catch (ResourceNotFoundException ex) {
+            System.out.println(ex.getMessage());
         }
-        System.out.println("Novo nome da Categoria:");
-        String nome = scanner.nextLine();
-        categoria.setNome(nome);
-        categoriaService.save(categoria);
-        System.out.println("Categoria atualizada com sucesso!");
     }
 
     private void deletarCategoria(Scanner scanner) {
         System.out.println("ID da Categoria a ser deletada:");
         Long id = Long.parseLong(scanner.nextLine());
-        categoriaService.deleteById(id);
-        System.out.println("Categoria deletada com sucesso!");
+        try {
+            categoriaService.deleteById(id);
+            System.out.println("Categoria deletada com sucesso!");
+        } catch (ResourceNotFoundException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 }

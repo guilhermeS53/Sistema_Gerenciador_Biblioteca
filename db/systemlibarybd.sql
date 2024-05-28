@@ -1,10 +1,10 @@
--- Tabela de Categorias
+-- Cria a Tabela de Categorias
 CREATE TABLE categoria (
     id SERIAL PRIMARY KEY,
     nome VARCHAR(255) NOT NULL
 );
 
--- Tabela de Usuários
+-- Cria a Tabela de Usuários
 CREATE TABLE usuario (
     id SERIAL PRIMARY KEY,
     nome VARCHAR(255) NOT NULL,
@@ -12,7 +12,7 @@ CREATE TABLE usuario (
     senha VARCHAR(255) NOT NULL,
 );
 
--- Tabela de Livros
+-- Cria a Tabela de Livros
 CREATE TABLE livro (
     id SERIAL PRIMARY KEY,
     titulo VARCHAR(255) NOT NULL,
@@ -24,7 +24,7 @@ CREATE TABLE livro (
     FOREIGN KEY (categoria_id) REFERENCES categoria (id) ON DELETE SET NULL
 );
 
--- Tabela de Empréstimos
+-- Cria a Tabela de Empréstimos
 CREATE TABLE emprestimo (
     id SERIAL PRIMARY KEY,
     dataEmprestimo DATE NOT NULL,
@@ -37,5 +37,5 @@ CREATE TABLE emprestimo (
     FOREIGN KEY (livro_id) REFERENCES livro (id)
 );
 
--- Criação o ENUM com ATIVO, DEVOLVIDO, ATRASADO
+-- Criação do ENUM com ATIVO, DEVOLVIDO, ATRASADO
 CREATE TYPE status_emprestimo AS ENUM ('ATIVO', 'DEVOLVIDO', 'ATRASADO');

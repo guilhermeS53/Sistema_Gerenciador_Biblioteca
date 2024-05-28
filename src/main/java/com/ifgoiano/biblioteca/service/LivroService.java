@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ifgoiano.biblioteca.model.Livro;
+import com.ifgoiano.biblioteca.model.ResourceNotFoundException;
 import com.ifgoiano.biblioteca.repository.LivroRepository;
 
 // Criação do serviço que encapsula a lógica de negócios
@@ -22,7 +23,7 @@ public class LivroService implements ILivroService {
 
     @Override
     public Livro findById(Long id) {
-        return livroRepository.findById(id).orElse(null);
+        return livroRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Livro não encontrado para o id: " + id));
     }
 
     public List<Livro> findByTituloContaining(String titulo){

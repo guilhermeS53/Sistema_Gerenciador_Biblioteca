@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ifgoiano.biblioteca.model.Categoria;
+import com.ifgoiano.biblioteca.model.ResourceNotFoundException;
 import com.ifgoiano.biblioteca.repository.CategoriaRepository;
 
 @Service
@@ -21,7 +22,8 @@ public class CategoriaService implements ICategoriaService {
 
     @Override
     public Categoria findById(Long id) {
-        return categoriaRepository.findById(id).orElse(null);
+        return categoriaRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Categoria não encontrada para o id: " + id));
     }
 
     @Override
@@ -31,6 +33,9 @@ public class CategoriaService implements ICategoriaService {
 
     @Override
     public void deleteById(Long id) {
+        if (!categoriaRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Categoria não encontrada para o id: " + id);
+        }
         categoriaRepository.deleteById(id);
     }
 
