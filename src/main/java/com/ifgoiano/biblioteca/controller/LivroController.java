@@ -80,7 +80,7 @@ public class LivroController {
     }
 
     private void buscarLivroPorId(Scanner scanner) {
-        System.out.println("Digite o ID do livro:");
+        System.out.println("Digite o ID do Livro:");
         Long id = Long.parseLong(scanner.nextLine());
 
         Livro livro = livroService.findById(id);
@@ -100,7 +100,7 @@ public class LivroController {
     }
 
     private void buscarLivroPorNome (Scanner scanner){
-        System.out.println("Digite o nome do livro (mínimo 4 caractéres): ");
+        System.out.println("Digite o nome do Livro (mínimo 4 caracteres): ");
         String nomeLivro = scanner.nextLine();
 
         if(nomeLivro.length() < 4){
@@ -159,6 +159,7 @@ public class LivroController {
         livro.setCategoria(categoria);
         livroService.save(livro);
         System.out.println("Livro adicionado com sucesso!");
+        System.out.println();
     }
 
     private Categoria adicionarNovaCategoria(Scanner scanner) {
@@ -170,6 +171,7 @@ public class LivroController {
     }
 
     private void atualizarLivro(Scanner scanner) {
+        listarLivros(); // Lista todos os Livros cadastrados no sistema
         System.out.println("ID do Livro a ser atualizado:");
         Long id = Long.parseLong(scanner.nextLine());
         Livro livro = livroService.findById(id);
@@ -203,12 +205,15 @@ public class LivroController {
         livro.setCategoria(categoria);
         livroService.updateLivro(id, livro);
         System.out.println("Livro atualizado com sucesso!");
+        System.out.println();
     }
 
     private void deletarLivro(Scanner scanner) {
+        listarLivros(); // Lista todos os Livros cadastrados no sistema
         System.out.println("ID do Livro a ser deletado:");
         Long id = Long.parseLong(scanner.nextLine());
         livroService.deleteById(id);
         System.out.println("Livro deletado com sucesso!");
+        System.out.println();
     }
 }
