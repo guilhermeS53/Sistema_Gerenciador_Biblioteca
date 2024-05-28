@@ -25,6 +25,10 @@ public class LivroService implements ILivroService {
         return livroRepository.findById(id).orElse(null);
     }
 
+    public List<Livro> findByTituloContaining(String titulo){
+        return livroRepository.findByTituloContainingIgnoreCase(titulo);
+    }
+
     @Override
     public Livro save(Livro livro) {
         return livroRepository.save(livro);

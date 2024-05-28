@@ -1,5 +1,6 @@
 package com.ifgoiano.biblioteca.controller;
 
+import java.util.List;
 import java.util.Scanner;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,7 @@ public class LivroController {
             System.out.println("3. Atualizar Livro");
             System.out.println("4. Deletar Livro");
             System.out.println("5. Buscar Livro por ID");
+            System.out.println("6. Buscar Livro por Nome");
             System.out.println("0. Voltar");
             int opcao = Integer.parseInt(scanner.nextLine());
 
@@ -54,6 +56,9 @@ public class LivroController {
                     break;
                 case 5:
                     buscarLivroPorId(scanner);
+                    break;
+                case 6:
+                    buscarLivroPorNome(scanner);
                     break;
                 default:
                     System.out.println("Opção inválida.");
@@ -91,6 +96,32 @@ public class LivroController {
         });
     } else {
             System.out.println("Livro não encontrado.");
+        }
+    }
+
+    private void buscarLivroPorNome (Scanner scanner){
+        System.out.println("Digite o nome do livro (mínimo 4 caractéres): ");
+        String nomeLivro = scanner.nextLine();
+
+        if(nomeLivro.length() < 4){
+            System.out.println("Nome muito curto. Por favor, digite pelo menos 4 caracteres.");
+            buscarLivroPorNome(scanner);
+            return;
+        }
+        List<Livro> livrosBusca = livroService.findByTituloContaining(nomeLivro);
+
+        if(livrosBusca.isEmpty()){
+            System.out.println("Nenhum resultado encontrado, tente buscar por outro livro.");
+        } else {
+            livrosBusca.forEach(livro -> {
+                System.out.println("ID: " + livro.getId());
+                System.out.println("Título: " + livro.getTitulo());
+                System.out.println("Autor: " + livro.getAutor());
+                System.out.println("Ano de publicação: " + livro.getAnoPub());
+                System.out.println("ISBN: " + livro.getIsbn());
+                System.out.println("Emprestado: " + livro.isEmprestado());
+                System.out.println("Categoria: " + (livro.getCategoria() != null ? livro.getCategoria().getNome() : "Sem Categoria\b"));
+            });
         }
     }
 
