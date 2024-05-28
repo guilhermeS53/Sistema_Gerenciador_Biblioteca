@@ -105,6 +105,7 @@ public class LivroController {
 
         if(nomeLivro.length() < 4){
             System.out.println("Nome muito curto. Por favor, digite pelo menos 4 caracteres.");
+            System.out.println();
             buscarLivroPorNome(scanner);
             return;
         }
