@@ -19,6 +19,7 @@ public class UsuarioController {
 
     public void run(Scanner scanner) {
         while (true) {
+            System.out.println();
             System.out.println("Gerenciar Usuários:");
             System.out.println("1. Cadastrar Usuário");
             System.out.println("2. Listar Usuários");
@@ -26,8 +27,8 @@ public class UsuarioController {
             System.out.println("4. Excluir Usuário");
             System.out.println("5. Login");
             System.out.println("0. Voltar");
-            int opcao = Integer.parseInt(scanner.nextLine());
             System.out.println();
+            int opcao = Integer.parseInt(scanner.nextLine());
 
             if (opcao == 0) break;
 
@@ -87,6 +88,7 @@ public class UsuarioController {
         Usuario usuario = usuarioService.findById(id);
         if (usuario == null) {
             System.out.println("Usuário não encontrado.");
+            System.out.println();
             return;
         }
 
@@ -112,6 +114,7 @@ public class UsuarioController {
     private void excluirUsuario(Scanner scanner) {
         listarUsuarios(); // Lista usuário em tela
         System.out.println("Digite o ID do usuário que deseja excluir:");
+        System.out.println();
         Long id = Long.parseLong(scanner.nextLine());
 
         usuarioService.deleteById(id);
@@ -128,8 +131,10 @@ public class UsuarioController {
         Usuario usuario = usuarioService.authenticate(login, senha);
         if (usuario != null) {
             System.out.println("Login realizado com sucesso! Bem-vindo, " + usuario.getNome() + "!");
+            System.out.println();
         } else {
             System.out.println("Login ou senha incorretos.");
+            System.out.println();
         }
     }
 }

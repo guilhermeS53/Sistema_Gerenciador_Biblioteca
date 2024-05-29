@@ -28,6 +28,7 @@ public class LivroController {
 
     public void run(Scanner scanner) {
         while (true) {
+            System.out.println();
             System.out.println("Gerenciar Livros:");
             System.out.println("1. Listar Livros");
             System.out.println("2. Adicionar Livro");
@@ -36,6 +37,7 @@ public class LivroController {
             System.out.println("5. Buscar Livro por ID");
             System.out.println("6. Buscar Livro por Nome");
             System.out.println("0. Voltar");
+            System.out.println();
             int opcao = Integer.parseInt(scanner.nextLine());
 
             if (opcao == 0)
@@ -94,6 +96,7 @@ public class LivroController {
             System.out.println();
     } else {
             System.out.println("Livro não encontrado.");
+            System.out.println();
         }
     }
 
@@ -120,6 +123,7 @@ public class LivroController {
                 System.out.println("ISBN: " + livro.getIsbn());
                 System.out.println("Emprestado: " + livro.isEmprestado());
                 System.out.println("Categoria: " + (livro.getCategoria() != null ? livro.getCategoria().getNome() : "Sem Categoria\b"));
+                System.out.println();
             });
         }
     }
@@ -175,6 +179,7 @@ public class LivroController {
         Livro livro = livroService.findById(id);
         if (livro == null) {
             System.out.println("Livro não encontrado.");
+            System.out.println();
             return;
         }
         System.out.println("Novo título do Livro:");
@@ -193,6 +198,7 @@ public class LivroController {
         Categoria categoria = categoriaService.findById(categoriaId);
         if (categoria == null) {
             System.out.println("Categoria não encontrada.");
+            System.out.println();
             return;
         }
 

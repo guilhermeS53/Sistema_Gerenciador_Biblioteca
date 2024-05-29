@@ -18,12 +18,14 @@ public class CategoriaController {
 
     public void run(Scanner scanner) {
         while (true) {
+            System.out.println();
             System.out.println("Gerenciar Categorias:");
             System.out.println("1. Listar Categorias");
             System.out.println("2. Adicionar Categoria");
             System.out.println("3. Atualizar Categoria");
             System.out.println("4. Deletar Categoria");
             System.out.println("0. Voltar");
+            System.out.println();
             int opcao = Integer.parseInt(scanner.nextLine());
 
             if (opcao == 0)
@@ -55,6 +57,7 @@ public class CategoriaController {
         } else {
             categorias.forEach(c -> {
                 System.out.println("ID: " + c.getId() + " - Nome: " + c.getNome());
+                System.out.println();
             });
         }
     }
@@ -83,6 +86,7 @@ public class CategoriaController {
             System.out.println();
         } catch (ResourceNotFoundException ex) {
             System.out.println(ex.getMessage());
+            System.out.println();
         }
     }
 
@@ -96,6 +100,7 @@ public class CategoriaController {
             System.out.println();
         } catch (ResourceNotFoundException ex) {
             System.out.println(ex.getMessage());
+            System.out.println();
         }
     }
 }

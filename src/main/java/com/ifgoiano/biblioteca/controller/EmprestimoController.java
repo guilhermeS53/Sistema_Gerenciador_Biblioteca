@@ -30,11 +30,13 @@ public class EmprestimoController {
 
     public void run(Scanner scanner) {
         while (true) {
+            System.out.println();
             System.out.println("Gerenciar Empréstimos:");
             System.out.println("1. Registrar Empréstimo");
             System.out.println("2. Registrar Devolução");
             System.out.println("3. Listar Empréstimos");
             System.out.println("0. Voltar");
+            System.out.println();
             int opcao = Integer.parseInt(scanner.nextLine());
 
             if (opcao == 0)
@@ -58,6 +60,7 @@ public class EmprestimoController {
 
     private void registrarEmprestimo(Scanner scanner) {
         try {
+            listarLivrosDisponiveis();
             System.out.println("ID do Livro:");
             Long livroId = Long.parseLong(scanner.nextLine());
             Livro livro = livroService.findById(livroId);
@@ -66,6 +69,7 @@ public class EmprestimoController {
                 return;
             }
 
+            listarUsuarios();
             System.out.println("ID do Usuário:");
             Long usuarioId = Long.parseLong(scanner.nextLine());
             Usuario usuario = usuarioService.findById(usuarioId);
@@ -92,6 +96,7 @@ public class EmprestimoController {
 
     private void registrarDevolucao(Scanner scanner) {
         try {
+            listarEmprestimosAtivos();
             System.out.println("ID do Empréstimo:");
             Long emprestimoId = Long.parseLong(scanner.nextLine());
             Emprestimo emprestimo = emprestimoService.findById(emprestimoId);
@@ -109,8 +114,10 @@ public class EmprestimoController {
             livroService.save(emprestimo.getLivro());
 
             System.out.println("Devolução registrada com sucesso!");
+            System.out.println();
         } catch (ResourceNotFoundException ex) {
             System.out.println(ex.getMessage());
+            System.out.println();
         } catch (Exception ex) {
             System.out.println("Erro ao registrar devolução: " + ex.getMessage());
             System.out.println();
@@ -124,6 +131,39 @@ public class EmprestimoController {
                 " | Usuário: " + emprestimo.getUsuario().getNome() + " | Status: " + emprestimo.getStatus() +
                 " | Data Empréstimo: " + emprestimo.getDataEmprestimo() + 
                 (emprestimo.getDataDevolucao() != null ? " | Data Devolução: " + emprestimo.getDataDevolucao() : ""));
+            System.out.println();
+        }
+    }
+
+    private void listarLivrosDisponiveis() {
+        List<Livro> livros = livroService.findAll();
+        System.out.println("Livros Disponíveis:");
+        for (Livro livro : livros) {
+            if (!livro.isEmprestado()) {
+                System.out.println("ID: " + livro.getId() + " | Título: " + livro.getTitulo() + " | Autor: " + livro.getAutor());
+                System.out.println();
+            }
+        }
+    }
+
+    private void listarUsuarios() {
+        List<Usuario> usuarios = usuarioService.findAll();
+        System.out.println("Usuários:");
+        for (Usuario usuario : usuarios) {
+            System.out.println("ID: " + usuario.getId() + " | Nome: " + usuario.getNome());
+            System.out.println();
+        }
+    }
+
+    private void listarEmprestimosAtivos() {
+        List<Emprestimo> emprestimos = emprestimoService.findAll();
+        System.out.println("Empréstimos Ativos:");
+        for (Emprestimo emprestimo : emprestimos) {
+            if (emprestimo.getStatus() == StatusEmprestimo.ATIVO) {
+                System.out.println("ID: " + emprestimo.getId() + " | Livro: " + emprestimo.getLivro().getTitulo() +
+                    " | Usuário: " + emprestimo.getUsuario().getNome() + " | Data Empréstimo: " + emprestimo.getDataEmprestimo());
+                System.out.println();
+            }
         }
     }
 }
