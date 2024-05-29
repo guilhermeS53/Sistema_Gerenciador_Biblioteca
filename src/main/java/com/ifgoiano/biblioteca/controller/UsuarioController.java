@@ -27,6 +27,7 @@ public class UsuarioController {
             System.out.println("5. Login");
             System.out.println("0. Voltar");
             int opcao = Integer.parseInt(scanner.nextLine());
+            System.out.println();
 
             if (opcao == 0) break;
 
@@ -70,6 +71,7 @@ public class UsuarioController {
 
         usuarioService.save(usuario);
         System.out.println("Usuário cadastrado com sucesso!");
+        System.out.println();
     }
 
     private void listarUsuarios() {
@@ -78,6 +80,7 @@ public class UsuarioController {
     }
 
     private void atualizarUsuario(Scanner scanner) {
+        listarUsuarios();
         System.out.println("Digite o ID do usuário que deseja atualizar:");
         Long id = Long.parseLong(scanner.nextLine());
 
@@ -103,14 +106,17 @@ public class UsuarioController {
 
         usuarioService.save(usuario);
         System.out.println("Usuário atualizado com sucesso!");
+        System.out.println();
     }
 
     private void excluirUsuario(Scanner scanner) {
+        listarUsuarios(); // Lista usuário em tela
         System.out.println("Digite o ID do usuário que deseja excluir:");
         Long id = Long.parseLong(scanner.nextLine());
 
         usuarioService.deleteById(id);
         System.out.println("Usuário excluído com sucesso!");
+        System.out.println();
     }
 
     public void login(Scanner scanner) {

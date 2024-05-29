@@ -81,10 +81,12 @@ public class EmprestimoController {
             livroService.save(livro);
 
             System.out.println("Empréstimo registrado com sucesso!");
+            System.out.println();
         } catch (ResourceNotFoundException ex) {
             System.out.println(ex.getMessage());
         } catch (Exception ex) {
             System.out.println("Erro ao registrar empréstimo: " + ex.getMessage());
+            System.out.println();
         }
     }
 
@@ -95,6 +97,7 @@ public class EmprestimoController {
             Emprestimo emprestimo = emprestimoService.findById(emprestimoId);
             if (emprestimo.getStatus() == StatusEmprestimo.DEVOLVIDO) {
                 System.out.println("Empréstimo já devolvido.");
+                System.out.println();
                 return;
             }
 
@@ -110,6 +113,7 @@ public class EmprestimoController {
             System.out.println(ex.getMessage());
         } catch (Exception ex) {
             System.out.println("Erro ao registrar devolução: " + ex.getMessage());
+            System.out.println();
         }
     }
 

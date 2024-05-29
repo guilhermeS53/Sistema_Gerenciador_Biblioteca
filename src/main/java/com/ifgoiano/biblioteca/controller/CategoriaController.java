@@ -66,9 +66,11 @@ public class CategoriaController {
         categoria.setNome(nome);
         categoriaService.save(categoria);
         System.out.println("Categoria adicionada com sucesso!");
+        System.out.println();
     }
 
     private void atualizarCategoria(Scanner scanner) {
+        listarCategorias(); // Lista todas as Categorias cadastrados no sistema
         System.out.println("ID da Categoria a ser atualizada:");
         Long id = Long.parseLong(scanner.nextLine());
         try {
@@ -78,17 +80,20 @@ public class CategoriaController {
             categoria.setNome(nome);
             categoriaService.save(categoria);
             System.out.println("Categoria atualizada com sucesso!");
+            System.out.println();
         } catch (ResourceNotFoundException ex) {
             System.out.println(ex.getMessage());
         }
     }
 
     private void deletarCategoria(Scanner scanner) {
+        listarCategorias(); // Lista todas as Categorias cadastrados no sistema
         System.out.println("ID da Categoria a ser deletada:");
         Long id = Long.parseLong(scanner.nextLine());
         try {
             categoriaService.deleteById(id);
             System.out.println("Categoria deletada com sucesso!");
+            System.out.println();
         } catch (ResourceNotFoundException ex) {
             System.out.println(ex.getMessage());
         }
