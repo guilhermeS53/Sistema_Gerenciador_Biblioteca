@@ -72,6 +72,7 @@ public class LivroController {
 
     private void listarLivros() {
         livroService.findAll().forEach(l -> {
+            System.out.println();
             System.out.println("ID: " + l.getId());
             System.out.println("Título: " + l.getTitulo());
             System.out.println("Autor: " + l.getAutor());
@@ -93,6 +94,7 @@ public class LivroController {
 
         Livro livro = livroService.findById(id);
         if (livro != null) { // Lógica atualizada para trazer apenas o livro com o ID digitado
+            System.out.println();
             System.out.println("ID: " + livro.getId());
             System.out.println("Título: " + livro.getTitulo());
             System.out.println("Autor: " + livro.getAutor());
@@ -108,6 +110,7 @@ public class LivroController {
     }
 
     private void buscarLivroPorNome(Scanner scanner) {
+        System.out.println();
         System.out.println("Digite o nome do Livro (mínimo 4 caracteres, ou tecle 0 para voltar): ");
         String nomeLivro = scanner.nextLine();
         if ("0".equals(nomeLivro)) {
@@ -115,6 +118,7 @@ public class LivroController {
         }
 
         if (nomeLivro.length() < 4) {
+            System.out.println();
             System.out.println("Nome muito curto. Por favor, digite pelo menos 4 caracteres.");
             System.out.println();
             buscarLivroPorNome(scanner);
@@ -123,9 +127,11 @@ public class LivroController {
         List<Livro> livrosBusca = livroService.findByTituloContaining(nomeLivro);
 
         if (livrosBusca.isEmpty()) {
+            System.out.println();
             System.out.println("Nenhum resultado encontrado, tente buscar por outro livro.");
         } else {
             livrosBusca.forEach(livro -> {
+                System.out.println();
                 System.out.println("ID: " + livro.getId());
                 System.out.println("Título: " + livro.getTitulo());
                 System.out.println("Autor: " + livro.getAutor());
@@ -140,6 +146,7 @@ public class LivroController {
     }
 
     private void adicionarLivro(Scanner scanner) {
+        System.out.println();
         System.out.println("Título do Livro (ou 0 para voltar):");
         String titulo = scanner.nextLine();
         if ("0".equals(titulo)) {
@@ -162,7 +169,7 @@ public class LivroController {
         }
 
         categoriaController.listarCategorias();
-        System.out.println("ID da Categoria: (Caso não encontre a que deseja, informe 0 para adicionar uma nova)");
+        System.out.println("ID da Categoria: (Caso não encontre a que deseja, informe 0 para adicionar uma nova categoria)");
         Long categoriaId = Long.parseLong(scanner.nextLine());
         Categoria categoria = null;
         if (categoriaId == 0) {
@@ -170,6 +177,7 @@ public class LivroController {
         } else {
             categoria = categoriaService.findById(categoriaId);
             if (categoria == null) {
+                System.out.println();
                 System.out.println("Categoria não encontrada. Que tal adicionar uma nova?");
                 categoria = adicionarNovaCategoria(scanner);
             }

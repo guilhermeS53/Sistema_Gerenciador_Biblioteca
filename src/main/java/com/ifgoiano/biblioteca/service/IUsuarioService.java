@@ -9,5 +9,5 @@ public interface IUsuarioService {
     List<Usuario> findAll();
     Usuario findById(Long id);
     void deleteById(Long id);
-    Usuario authenticate(String login, String senha);
+    Usuario authenticate(String telefone);
 }

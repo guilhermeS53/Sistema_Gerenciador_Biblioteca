@@ -16,8 +16,7 @@ public class Usuario {
     private Long id;
     private String nome;
     private String email;
-    private String login;
-    private String senha;
+    private String telefone;
 
     public Long getId() {
         return id;
@@ -43,20 +42,12 @@ public class Usuario {
         this.email = email;
     }
 
-    public String getLogin() {
-        return login;
+    public String getTelefone() {
+        return telefone;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
     }
 
 }

@@ -34,22 +34,21 @@ public class UsuarioService implements IUsuarioService {
 
     @Override
     public Usuario findById(Long id) {
-        return usuarioRepository.findById(id).orElseThrow(() -> 
-            new ResourceNotFoundException("Usuário não encontrado para o id: " + id));
+        return usuarioRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado para o id: " + id));
     }
 
     @Override
     public void deleteById(Long id) {
-    List<Emprestimo> emprestimos = emprestimoRepository.findByUsuarioId(id);
-    if (!emprestimos.isEmpty()) {
-        throw new UsuarioComEmprestimosException("Não é possível excluir o usuário, pois já houveram registros de empréstimo na Biblioteca.");
+        List<Emprestimo> emprestimos = emprestimoRepository.findByUsuarioId(id);
+        if (!emprestimos.isEmpty()) {
+            throw new UsuarioComEmprestimosException("Não é possível excluir o usuário, pois já houveram registros de empréstimo na Biblioteca.");
+        }
+        usuarioRepository.deleteById(id);
     }
-    usuarioRepository.deleteById(id);
-}
-
+    
     @Override
-    public Usuario authenticate(String login, String senha) {
-        return usuarioRepository.findByLoginAndSenha(login, senha).orElseThrow(() -> 
-            new ResourceNotFoundException("Usuário não encontrado para o Login: " + login));
+    public Usuario authenticate(String telefone) {
+        return usuarioRepository.findByTelefone(telefone);
     }
 }

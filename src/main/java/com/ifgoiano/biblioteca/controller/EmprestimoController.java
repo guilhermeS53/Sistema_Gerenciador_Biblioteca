@@ -61,6 +61,7 @@ public class EmprestimoController {
     private void registrarEmprestimo(Scanner scanner) {
         try {
             listarLivrosDisponiveis();
+            System.out.println();
             System.out.println("ID do Livro (Tecle 0 se quiser voltar):");
             String livroIdStr = scanner.nextLine();
             if (livroIdStr.equals("0")) return;
@@ -68,11 +69,13 @@ public class EmprestimoController {
 
             Livro livro = livroService.findById(livroId);
             if (livro.isEmprestado()) {
+                System.out.println();
                 System.out.println("Livro indisponível.");
                 return;
             }
 
             listarUsuarios();
+            System.out.println();
             System.out.println("ID do Usuário (Tecle 0 se quiser voltar):");
             String usuarioIdStr = scanner.nextLine();
             if (usuarioIdStr.equals("0")) return;

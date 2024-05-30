@@ -53,6 +53,7 @@ public class CategoriaController {
     public void listarCategorias() {
         List<Categoria> categorias = categoriaService.findAll();
         if (categorias.isEmpty()) {
+            System.out.println();
             System.out.println("Nenhuma categoria encontrada.");
         } else {
             categorias.forEach(c -> {
@@ -62,6 +63,7 @@ public class CategoriaController {
     }
 
     private void adicionarCategoria(Scanner scanner) {
+        System.out.println();
         System.out.println("Nome da Categoria (Tecle 0 caso queira voltar):");
         String nome = scanner.nextLine();
         if ("0".equals(nome)) {
@@ -70,6 +72,7 @@ public class CategoriaController {
         Categoria categoria = new Categoria();
         categoria.setNome(nome);
         categoriaService.save(categoria);
+        System.out.println();
         System.out.println("Categoria adicionada com sucesso!");
         System.out.println();
     }
@@ -83,6 +86,7 @@ public class CategoriaController {
         }
         try {
             Categoria categoria = categoriaService.findById(id);
+            System.out.println();
             System.out.println("Novo nome da Categoria:");
             String nome = scanner.nextLine();
             categoria.setNome(nome);

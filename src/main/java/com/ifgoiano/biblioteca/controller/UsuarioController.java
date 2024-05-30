@@ -27,7 +27,6 @@ public class UsuarioController {
             System.out.println("2. Listar Usuários");
             System.out.println("3. Atualizar Usuário");
             System.out.println("4. Excluir Usuário");
-            System.out.println("5. Login");
             System.out.println("0. Voltar");
             System.out.println();
             int opcao = Integer.parseInt(scanner.nextLine());
@@ -48,9 +47,6 @@ public class UsuarioController {
                 case 4:
                     excluirUsuario(scanner);
                     break;
-                case 5:
-                    login(scanner);
-                    break;
                 default:
                     System.out.println("Opção inválida.");
             }
@@ -68,21 +64,15 @@ public class UsuarioController {
         if (email.equals("0"))
             return;
 
-        System.out.println("Login (Tecle 0 se quiser voltar):");
-        String login = scanner.nextLine();
-        if (login.equals("0"))
-            return;
-
-        System.out.println("Senha (Tecle 0 se quiser voltar):");
-        String senha = scanner.nextLine();
-        if (senha.equals("0"))
+        System.out.println("Telefone (Tecle 0 se quiser voltar):");
+        String telefone = scanner.nextLine();
+        if (telefone.equals("0"))
             return;
 
         Usuario usuario = new Usuario();
         usuario.setNome(nome);
         usuario.setEmail(email);
-        usuario.setLogin(login);
-        usuario.setSenha(senha);
+        usuario.setTelefone(telefone);
 
         usuarioService.save(usuario);
         System.out.println("Usuário cadastrado com sucesso!");
@@ -120,20 +110,14 @@ public class UsuarioController {
         if (email.equals("0"))
             return;
 
-        System.out.println("Login (atual: " + usuario.getLogin() + ")(Tecle 0 se quiser voltar):");
-        String login = scanner.nextLine();
-        if (login.equals("0"))
-            return;
-
-        System.out.println("Senha (atual: " + usuario.getSenha() + ")(Tecle 0 se quiser voltar):");
-        String senha = scanner.nextLine();
-        if (senha.equals("0"))
+        System.out.println("Telefone (atual: " + usuario.getTelefone() + ")(Tecle 0 se quiser voltar):");
+        String telefone = scanner.nextLine();
+        if (telefone.equals("0"))
             return;
 
         usuario.setNome(nome.isEmpty() ? usuario.getNome() : nome);
         usuario.setEmail(email.isEmpty() ? usuario.getEmail() : email);
-        usuario.setLogin(login.isEmpty() ? usuario.getLogin() : login);
-        usuario.setSenha(senha.isEmpty() ? usuario.getSenha() : senha);
+        usuario.setTelefone(telefone.isEmpty() ? usuario.getTelefone() : telefone);
 
         usuarioService.save(usuario);
         System.out.println("Usuário atualizado com sucesso!");
@@ -156,27 +140,6 @@ public class UsuarioController {
             System.out.println();
         } catch (UsuarioComEmprestimosException ex) {
             System.out.println(ex.getMessage());
-            System.out.println();
-        }
-    }
-
-    public void login(Scanner scanner) {
-        System.out.println("Login:");
-        String login = scanner.nextLine();
-        if (login.equals("0"))
-            return;
-
-        System.out.println("Senha:");
-        String senha = scanner.nextLine();
-        if (senha.equals("0"))
-            return;
-
-        Usuario usuario = usuarioService.authenticate(login, senha);
-        if (usuario != null) {
-            System.out.println("Login realizado com sucesso! Bem-vindo, " + usuario.getNome() + "!");
-            System.out.println();
-        } else {
-            System.out.println("Login ou senha incorretos.");
             System.out.println();
         }
     }

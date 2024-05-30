@@ -44,7 +44,6 @@ public class BibliotecaApplication implements CommandLineRunner {
             System.out.println("2. Gerenciar Livros");
             System.out.println("3. Gerenciar Empréstimos");
             System.out.println("4. Gerenciar Categorias");
-            System.out.println("5. Login");
             System.out.println("0. Sair");
             System.out.println();
             int opcao = scanner.nextInt();
@@ -67,9 +66,6 @@ public class BibliotecaApplication implements CommandLineRunner {
                     break;
                 case 4:
                     categoriaController.run(scanner);
-                    break;
-                case 5:
-                    usuarioController.login(scanner);
                     break;
                 default:
                     System.out.println("Opção inválida! Tente novamente!");
