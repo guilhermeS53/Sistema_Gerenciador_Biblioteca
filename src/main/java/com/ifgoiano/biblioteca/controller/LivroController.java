@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 
 import com.ifgoiano.biblioteca.model.Categoria;
 import com.ifgoiano.biblioteca.model.Livro;
+import com.ifgoiano.biblioteca.model.LivroComEmprestimosException;
+import com.ifgoiano.biblioteca.model.ResourceNotFoundException;
 import com.ifgoiano.biblioteca.service.CategoriaService;
 import com.ifgoiano.biblioteca.service.LivroService;
 
@@ -76,14 +78,18 @@ public class LivroController {
             System.out.println("Ano de Publicação: " + l.getAnoPub());
             System.out.println("ISBN: " + l.getIsbn());
             System.out.println("Emprestado: " + l.isEmprestado());
-            System.out.println("Categoria: " + (l.getCategoria() != null ? l.getCategoria().getNome() : "Sem Categoria"));
+            System.out
+                    .println("Categoria: " + (l.getCategoria() != null ? l.getCategoria().getNome() : "Sem Categoria"));
             System.out.println();
         });
     }
 
     private void buscarLivroPorId(Scanner scanner) {
-        System.out.println("Digite o ID do Livro:");
+        System.out.println("Digite o ID do Livro (Tecle 0 para voltar):");
         Long id = Long.parseLong(scanner.nextLine());
+        if (id == 0) {
+            return;
+        }
 
         Livro livro = livroService.findById(id);
         if (livro != null) { // Lógica atualizada para trazer apenas o livro com o ID digitado
@@ -92,19 +98,23 @@ public class LivroController {
             System.out.println("Autor: " + livro.getAutor());
             System.out.println("Ano de Publicação: " + livro.getAnoPub());
             System.out.println("ISBN: " + livro.getIsbn());
-            System.out.println("Categoria: " + (livro.getCategoria() != null ? livro.getCategoria().getNome() : "Sem Categoria"));
+            System.out.println(
+                    "Categoria: " + (livro.getCategoria() != null ? livro.getCategoria().getNome() : "Sem Categoria"));
             System.out.println();
-    } else {
+        } else {
             System.out.println("Livro não encontrado.");
             System.out.println();
         }
     }
 
-    private void buscarLivroPorNome (Scanner scanner){
-        System.out.println("Digite o nome do Livro (mínimo 4 caracteres): ");
+    private void buscarLivroPorNome(Scanner scanner) {
+        System.out.println("Digite o nome do Livro (mínimo 4 caracteres, ou tecle 0 para voltar): ");
         String nomeLivro = scanner.nextLine();
+        if ("0".equals(nomeLivro)) {
+            return;
+        }
 
-        if(nomeLivro.length() < 4){
+        if (nomeLivro.length() < 4) {
             System.out.println("Nome muito curto. Por favor, digite pelo menos 4 caracteres.");
             System.out.println();
             buscarLivroPorNome(scanner);
@@ -112,7 +122,7 @@ public class LivroController {
         }
         List<Livro> livrosBusca = livroService.findByTituloContaining(nomeLivro);
 
-        if(livrosBusca.isEmpty()){
+        if (livrosBusca.isEmpty()) {
             System.out.println("Nenhum resultado encontrado, tente buscar por outro livro.");
         } else {
             livrosBusca.forEach(livro -> {
@@ -122,25 +132,41 @@ public class LivroController {
                 System.out.println("Ano de publicação: " + livro.getAnoPub());
                 System.out.println("ISBN: " + livro.getIsbn());
                 System.out.println("Emprestado: " + livro.isEmprestado());
-                System.out.println("Categoria: " + (livro.getCategoria() != null ? livro.getCategoria().getNome() : "Sem Categoria\b"));
+                System.out.println("Categoria: "
+                        + (livro.getCategoria() != null ? livro.getCategoria().getNome() : "Sem Categoria\b"));
                 System.out.println();
             });
         }
     }
 
     private void adicionarLivro(Scanner scanner) {
-        System.out.println("Título do Livro:");
+        System.out.println("Título do Livro (ou 0 para voltar):");
         String titulo = scanner.nextLine();
+        if ("0".equals(titulo)) {
+            return;
+        }
         System.out.println("Autor do Livro:");
         String autor = scanner.nextLine();
+        if ("0".equals(autor)) {
+            return;
+        }
         System.out.println("Ano de Publicação:");
         int anoPub = Integer.parseInt(scanner.nextLine());
+        if (anoPub == 0) {
+            return;
+        }
         System.out.println("ISBN do Livro:");
         String isbn = scanner.nextLine();
+        if ("0".equals(isbn)) {
+            return;
+        }
 
         categoriaController.listarCategorias();
         System.out.println("ID da Categoria: (Caso não encontre a que deseja, informe 0 para adicionar uma nova)");
         Long categoriaId = Long.parseLong(scanner.nextLine());
+        if (categoriaId == 0) {
+            return;
+        }
 
         Categoria categoria;
         if (categoriaId == 0) {
@@ -167,7 +193,7 @@ public class LivroController {
     private Categoria adicionarNovaCategoria(Scanner scanner) {
         System.out.println("Nome da nova Categoria:");
         String nomeCategoria = scanner.nextLine();
-        Categoria novaCategoria = new Categoria(); 
+        Categoria novaCategoria = new Categoria();
         novaCategoria.setNome(nomeCategoria);
         return categoriaService.save(novaCategoria);
     }
@@ -176,6 +202,9 @@ public class LivroController {
         listarLivros(); // Lista todos os Livros cadastrados no sistema
         System.out.println("ID do Livro a ser atualizado:");
         Long id = Long.parseLong(scanner.nextLine());
+        if (id == 0) {
+            return;
+        }
         Livro livro = livroService.findById(id);
         if (livro == null) {
             System.out.println("Livro não encontrado.");
@@ -216,8 +245,19 @@ public class LivroController {
         listarLivros(); // Lista todos os Livros cadastrados no sistema
         System.out.println("ID do Livro a ser deletado:");
         Long id = Long.parseLong(scanner.nextLine());
-        livroService.deleteById(id);
-        System.out.println("Livro deletado com sucesso!");
-        System.out.println();
+        if (id == 0) {
+            return;
+        }
+        try {
+            livroService.deleteById(id);
+            System.out.println("Livro deletado com sucesso!");
+            System.out.println();
+        } catch (ResourceNotFoundException ex) {
+            System.out.println(ex.getMessage());
+            System.out.println();
+        } catch (LivroComEmprestimosException ex) {
+            System.out.println(ex.getMessage());
+            System.out.println();
+        }
     }
 }

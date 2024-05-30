@@ -61,8 +61,11 @@ public class EmprestimoController {
     private void registrarEmprestimo(Scanner scanner) {
         try {
             listarLivrosDisponiveis();
-            System.out.println("ID do Livro:");
-            Long livroId = Long.parseLong(scanner.nextLine());
+            System.out.println("ID do Livro (Tecle 0 se quiser voltar):");
+            String livroIdStr = scanner.nextLine();
+            if (livroIdStr.equals("0")) return;
+            Long livroId = Long.parseLong(livroIdStr);
+
             Livro livro = livroService.findById(livroId);
             if (livro.isEmprestado()) {
                 System.out.println("Livro indisponível.");
@@ -70,8 +73,11 @@ public class EmprestimoController {
             }
 
             listarUsuarios();
-            System.out.println("ID do Usuário:");
-            Long usuarioId = Long.parseLong(scanner.nextLine());
+            System.out.println("ID do Usuário (Tecle 0 se quiser voltar):");
+            String usuarioIdStr = scanner.nextLine();
+            if (usuarioIdStr.equals("0")) return;
+            Long usuarioId = Long.parseLong(usuarioIdStr);
+
             Usuario usuario = usuarioService.findById(usuarioId);
 
             Emprestimo emprestimo = new Emprestimo();
@@ -97,8 +103,11 @@ public class EmprestimoController {
     private void registrarDevolucao(Scanner scanner) {
         try {
             listarEmprestimosAtivos();
-            System.out.println("ID do Empréstimo:");
-            Long emprestimoId = Long.parseLong(scanner.nextLine());
+            System.out.println("ID do Empréstimo (Tecle 0 se quiser voltar):");
+            String emprestimoIdStr = scanner.nextLine();
+            if (emprestimoIdStr.equals("0")) return;
+            Long emprestimoId = Long.parseLong(emprestimoIdStr);
+
             Emprestimo emprestimo = emprestimoService.findById(emprestimoId);
             if (emprestimo.getStatus() == StatusEmprestimo.DEVOLVIDO) {
                 System.out.println("Empréstimo já devolvido.");

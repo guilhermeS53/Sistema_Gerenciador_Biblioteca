@@ -63,8 +63,11 @@ public class CategoriaController {
     }
 
     private void adicionarCategoria(Scanner scanner) {
-        System.out.println("Nome da Categoria:");
+        System.out.println("Nome da Categoria (Tecle 0 caso queira voltar):");
         String nome = scanner.nextLine();
+        if ("0".equals(nome)) {
+            return; // Retornar ao menu principal caso usuário queira
+        }
         Categoria categoria = new Categoria();
         categoria.setNome(nome);
         categoriaService.save(categoria);
@@ -74,8 +77,11 @@ public class CategoriaController {
 
     private void atualizarCategoria(Scanner scanner) {
         listarCategorias(); // Lista todas as Categorias cadastrados no sistema
-        System.out.println("ID da Categoria a ser atualizada:");
+        System.out.println("ID da Categoria a ser atualizada (Tecle 0 caso queira voltar):");
         Long id = Long.parseLong(scanner.nextLine());
+        if (id == 0) {
+            return; // Volta ao menu principal
+        }
         try {
             Categoria categoria = categoriaService.findById(id);
             System.out.println("Novo nome da Categoria:");
@@ -92,8 +98,11 @@ public class CategoriaController {
 
     private void deletarCategoria(Scanner scanner) {
         listarCategorias(); // Lista todas as Categorias cadastrados no sistema
-        System.out.println("ID da Categoria a ser deletada:");
+        System.out.println("ID da Categoria a ser deletada (Tecle 0 para voltar):");
         Long id = Long.parseLong(scanner.nextLine());
+        if (id == 0) {
+            return; // Volta ao menu principal
+        }
         try {
             categoriaService.deleteById(id);
             System.out.println("Categoria deletada com sucesso!");

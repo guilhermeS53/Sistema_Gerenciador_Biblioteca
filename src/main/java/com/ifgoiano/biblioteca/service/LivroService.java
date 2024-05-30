@@ -5,9 +5,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ifgoiano.biblioteca.model.Emprestimo;
 import com.ifgoiano.biblioteca.model.Livro;
+import com.ifgoiano.biblioteca.model.LivroComEmprestimosException;
 import com.ifgoiano.biblioteca.model.ResourceNotFoundException;
 import com.ifgoiano.biblioteca.repository.LivroRepository;
+import com.ifgoiano.biblioteca.repository.EmprestimoRepository;
 
 // Criação do serviço que encapsula a lógica de negócios
 @Service
@@ -15,6 +18,9 @@ public class LivroService implements ILivroService {
 
     @Autowired
     private LivroRepository livroRepository;
+
+    @Autowired
+    private EmprestimoRepository emprestimoRepository;
 
     @Override
     public List<Livro> findAll() {
@@ -37,6 +43,10 @@ public class LivroService implements ILivroService {
 
     @Override
     public void deleteById(Long id) {
+        List<Emprestimo> emprestimos = emprestimoRepository.findByLivroId(id);
+        if (!emprestimos.isEmpty()) {
+            throw new LivroComEmprestimosException("Não é possível excluir o livro selecionado, porque já foi emprestado em algum momento.");
+        }
         livroRepository.deleteById(id);
     }
 

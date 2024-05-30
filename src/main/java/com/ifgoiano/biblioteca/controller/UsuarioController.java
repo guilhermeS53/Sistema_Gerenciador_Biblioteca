@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Controller;
 
+import com.ifgoiano.biblioteca.model.ResourceNotFoundException;
 import com.ifgoiano.biblioteca.model.Usuario;
+import com.ifgoiano.biblioteca.model.UsuarioComEmprestimosException;
 import com.ifgoiano.biblioteca.service.UsuarioService;
 // Controlador para interação com os livros da Biblioteca
 
@@ -30,7 +32,8 @@ public class UsuarioController {
             System.out.println();
             int opcao = Integer.parseInt(scanner.nextLine());
 
-            if (opcao == 0) break;
+            if (opcao == 0)
+                break;
 
             switch (opcao) {
                 case 1:
@@ -55,14 +58,25 @@ public class UsuarioController {
     }
 
     private void cadastrarUsuario(Scanner scanner) {
-        System.out.println("Nome:");
+        System.out.println("Nome (Tecle 0 se quiser voltar):");
         String nome = scanner.nextLine();
-        System.out.println("Email:");
+        if (nome.equals("0"))
+            return;
+
+        System.out.println("Email (Tecle 0 se quiser voltar):");
         String email = scanner.nextLine();
-        System.out.println("Login:");
+        if (email.equals("0"))
+            return;
+
+        System.out.println("Login (Tecle 0 se quiser voltar):");
         String login = scanner.nextLine();
-        System.out.println("Senha:");
+        if (login.equals("0"))
+            return;
+
+        System.out.println("Senha (Tecle 0 se quiser voltar):");
         String senha = scanner.nextLine();
+        if (senha.equals("0"))
+            return;
 
         Usuario usuario = new Usuario();
         usuario.setNome(nome);
@@ -78,12 +92,16 @@ public class UsuarioController {
     private void listarUsuarios() {
         List<Usuario> usuarios = usuarioService.findAll();
         usuarios.forEach(u -> System.out.println(u.getId() + " - " + u.getNome()));
+        System.out.println();
     }
 
     private void atualizarUsuario(Scanner scanner) {
         listarUsuarios();
-        System.out.println("Digite o ID do usuário que deseja atualizar:");
-        Long id = Long.parseLong(scanner.nextLine());
+        System.out.println("Digite o ID do usuário que deseja atualizar (Tecle 0 se quiser voltar):");
+        String idStr = scanner.nextLine();
+        if (idStr.equals("0"))
+            return;
+        Long id = Long.parseLong(idStr);
 
         Usuario usuario = usuarioService.findById(id);
         if (usuario == null) {
@@ -92,14 +110,25 @@ public class UsuarioController {
             return;
         }
 
-        System.out.println("Nome (atual: " + usuario.getNome() + "):");
+        System.out.println("Nome (atual: " + usuario.getNome() + ")(Tecle 0 se quiser voltar):");
         String nome = scanner.nextLine();
-        System.out.println("Email (atual: " + usuario.getEmail() + "):");
+        if (nome.equals("0"))
+            return;
+
+        System.out.println("Email (atual: " + usuario.getEmail() + ")(Tecle 0 se quiser voltar):");
         String email = scanner.nextLine();
-        System.out.println("Login (atual: " + usuario.getLogin() + "):");
+        if (email.equals("0"))
+            return;
+
+        System.out.println("Login (atual: " + usuario.getLogin() + ")(Tecle 0 se quiser voltar):");
         String login = scanner.nextLine();
-        System.out.println("Senha (atual: " + usuario.getSenha() + "):");
+        if (login.equals("0"))
+            return;
+
+        System.out.println("Senha (atual: " + usuario.getSenha() + ")(Tecle 0 se quiser voltar):");
         String senha = scanner.nextLine();
+        if (senha.equals("0"))
+            return;
 
         usuario.setNome(nome.isEmpty() ? usuario.getNome() : nome);
         usuario.setEmail(email.isEmpty() ? usuario.getEmail() : email);
@@ -112,21 +141,35 @@ public class UsuarioController {
     }
 
     private void excluirUsuario(Scanner scanner) {
-        listarUsuarios(); // Lista usuário em tela
-        System.out.println("Digite o ID do usuário que deseja excluir:");
-        System.out.println();
+        listarUsuarios();
+        System.out.println("Digite o ID do usuário que deseja excluir (Tecle 0 se quiser voltar):");
         Long id = Long.parseLong(scanner.nextLine());
-
-        usuarioService.deleteById(id);
-        System.out.println("Usuário excluído com sucesso!");
-        System.out.println();
+        if (id == 0) {
+            return;
+        }
+        try {
+            usuarioService.deleteById(id);
+            System.out.println("Usuário excluído com sucesso!");
+            System.out.println();
+        } catch (ResourceNotFoundException ex) {
+            System.out.println(ex.getMessage());
+            System.out.println();
+        } catch (UsuarioComEmprestimosException ex) {
+            System.out.println(ex.getMessage());
+            System.out.println();
+        }
     }
 
     public void login(Scanner scanner) {
         System.out.println("Login:");
         String login = scanner.nextLine();
+        if (login.equals("0"))
+            return;
+
         System.out.println("Senha:");
         String senha = scanner.nextLine();
+        if (senha.equals("0"))
+            return;
 
         Usuario usuario = usuarioService.authenticate(login, senha);
         if (usuario != null) {
