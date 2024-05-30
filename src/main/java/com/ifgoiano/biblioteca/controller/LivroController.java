@@ -164,11 +164,7 @@ public class LivroController {
         categoriaController.listarCategorias();
         System.out.println("ID da Categoria: (Caso não encontre a que deseja, informe 0 para adicionar uma nova)");
         Long categoriaId = Long.parseLong(scanner.nextLine());
-        if (categoriaId == 0) {
-            return;
-        }
-
-        Categoria categoria;
+        Categoria categoria = null;
         if (categoriaId == 0) {
             categoria = adicionarNovaCategoria(scanner);
         } else {
@@ -191,12 +187,22 @@ public class LivroController {
     }
 
     private Categoria adicionarNovaCategoria(Scanner scanner) {
-        System.out.println("Nome da nova Categoria:");
+        while (true) {
+        System.out.println("Nome da nova Categoria (Tecle 0 caso queira voltar):");
         String nomeCategoria = scanner.nextLine();
-        Categoria novaCategoria = new Categoria();
-        novaCategoria.setNome(nomeCategoria);
-        return categoriaService.save(novaCategoria);
+        if ("0".equals(nomeCategoria)) {
+            return null;
+        }
+
+        if (categoriaService.findByNome(nomeCategoria) != null) {
+            System.out.println("Categoria já existente. Tente novamente.");
+        } else {
+            Categoria novaCategoria = new Categoria();
+            novaCategoria.setNome(nomeCategoria);
+            return categoriaService.save(novaCategoria);
+        }
     }
+}
 
     private void atualizarLivro(Scanner scanner) {
         listarLivros(); // Lista todos os Livros cadastrados no sistema

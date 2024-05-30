@@ -57,7 +57,6 @@ public class CategoriaController {
         } else {
             categorias.forEach(c -> {
                 System.out.println("ID: " + c.getId() + " - Nome: " + c.getNome());
-                System.out.println();
             });
         }
     }
