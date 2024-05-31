@@ -18,7 +18,12 @@
 - Listar Usuários :white_check_mark:
 - Atualizar Usuário :white_check_mark:
 - Excluir Usuário :white_check_mark:
-- Acesso Simples por Login e Senha com Autenticação :white_check_mark:
+
+:bust_in_silhouette: Categoria
+- Cadastrar Categoria :white_check_mark:
+- Listar Categorias :white_check_mark:
+- Atualizar Categoria :white_check_mark:
+- Excluir Categoria :white_check_mark:
 
 :palm_up_hand: Empréstimos
 - Registrar Empréstimo :white_check_mark:
