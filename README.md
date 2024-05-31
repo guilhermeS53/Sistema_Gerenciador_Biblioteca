@@ -2,12 +2,12 @@
 
 **Objetivo**: Implementar um sistema simples em Java que apresenta via linha de comando (CLI) um menu de Biblioteca com as opções:
 
-<h1> ⚙ Funcionalidades Principais: </h1>
+<h1> ⚙ Funcionalidades Principais </h1>
 
 :book: Livros
 - Cadastrar Livro :white_check_mark:
 - Listar Livros :white_check_mark:
-- Buscar Livro (por ID) :white_check_mark:
+- Buscar Livro (por Nome ou ID) :white_check_mark:
 - Atualizar Livro :white_check_mark:
 - Excluir Livro :white_check_mark:
 - Emprestar Livro :white_check_mark:
@@ -19,7 +19,7 @@
 - Atualizar Usuário :white_check_mark:
 - Excluir Usuário :white_check_mark:
 
-:bust_in_silhouette: Categoria
+:palm_up_hand: Categoria
 - Cadastrar Categoria :white_check_mark:
 - Listar Categorias :white_check_mark:
 - Atualizar Categoria :white_check_mark:
@@ -28,7 +28,7 @@
 :palm_up_hand: Empréstimos
 - Registrar Empréstimo :white_check_mark:
 - Registrar Devolução :white_check_mark:
-- Listar Empréstimos (através do enum ATIVO, DEVOLVIDO, ATRASADO) :white_check_mark:
+- Listar Empréstimos (através de Enumeradores sendo ATIVO, DEVOLVIDO ou ATRASADO) :white_check_mark:
 
 <h1> ⚙ Precondições do Sistema  </h1>
 
@@ -74,10 +74,10 @@ O Projeto de Biblioteca segue a estrutura padrão do Maven no padrão Spring:
 │   │   │       └── ifgoiano
 │   │   │           └── biblioteca
 │   │   │               └── controller
-│   │   │                   └── model
-│   │   │                   └── repository
-│   │   │                   └── service
-│   │   │                   └── util
+│   │   │               └── model
+│   │   │               └── repository
+│   │   │               └── service
+│   │   │               └── util
 │   │   └── resources
 │   └── test
 │       ├── java
