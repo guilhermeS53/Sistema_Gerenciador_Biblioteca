@@ -46,8 +46,19 @@ public class BibliotecaApplication implements CommandLineRunner {
             System.out.println("4. Gerenciar Categorias");
             System.out.println("0. Sair");
             System.out.println();
-            int opcao = scanner.nextInt();
-            scanner.nextLine();
+
+            String input = scanner.nextLine();
+            int opcao = -1;
+
+            try {
+                if (input.isEmpty()) {
+                    throw new NumberFormatException();
+                }
+                opcao = Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                System.out.println("Entrada inválida. Tente novamente.");
+                continue;
+            }
 
             if (opcao == 0) {
                 System.out.println("Encerrando Sistema de Biblioteca...");

@@ -29,10 +29,23 @@ public class UsuarioController {
             System.out.println("4. Excluir Usuário");
             System.out.println("0. Voltar");
             System.out.println();
-            int opcao = Integer.parseInt(scanner.nextLine());
+            
+            String input = scanner.nextLine();
+            int opcao = -1;
 
-            if (opcao == 0)
+            try {
+                if (input.isEmpty()) {
+                    throw new NumberFormatException();
+                }
+                opcao = Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                System.out.println("Entrada inválida! Por favor, insira um número.");
+                continue;
+            }
+
+            if (opcao == 0) {
                 break;
+            }
 
             switch (opcao) {
                 case 1:
@@ -56,18 +69,21 @@ public class UsuarioController {
     private void cadastrarUsuario(Scanner scanner) {
         System.out.println("Nome (Tecle 0 se quiser voltar):");
         String nome = scanner.nextLine();
-        if (nome.equals("0"))
+        if (nome.equals("0")) {
             return;
+        }
 
         System.out.println("Email (Tecle 0 se quiser voltar):");
         String email = scanner.nextLine();
-        if (email.equals("0"))
+        if (email.equals("0")) {
             return;
+        }
 
         System.out.println("Telefone (Tecle 0 se quiser voltar):");
         String telefone = scanner.nextLine();
-        if (telefone.equals("0"))
+        if (telefone.equals("0")) {
             return;
+        }
 
         Usuario usuario = new Usuario();
         usuario.setNome(nome);
@@ -89,9 +105,17 @@ public class UsuarioController {
         listarUsuarios();
         System.out.println("Digite o ID do usuário que deseja atualizar (Tecle 0 se quiser voltar):");
         String idStr = scanner.nextLine();
-        if (idStr.equals("0"))
+        if (idStr.equals("0")) {
             return;
-        Long id = Long.parseLong(idStr);
+        }
+
+        Long id;
+        try {
+            id = Long.parseLong(idStr);
+        } catch (NumberFormatException e) {
+            System.out.println("ID inválido! Por favor, insira um número válido.");
+            return;
+        }
 
         Usuario usuario = usuarioService.findById(id);
         if (usuario == null) {
@@ -102,18 +126,21 @@ public class UsuarioController {
 
         System.out.println("Nome (atual: " + usuario.getNome() + ")(Tecle 0 se quiser voltar):");
         String nome = scanner.nextLine();
-        if (nome.equals("0"))
+        if (nome.equals("0")) {
             return;
+        }
 
         System.out.println("Email (atual: " + usuario.getEmail() + ")(Tecle 0 se quiser voltar):");
         String email = scanner.nextLine();
-        if (email.equals("0"))
+        if (email.equals("0")) {
             return;
+        }
 
         System.out.println("Telefone (atual: " + usuario.getTelefone() + ")(Tecle 0 se quiser voltar):");
         String telefone = scanner.nextLine();
-        if (telefone.equals("0"))
+        if (telefone.equals("0")) {
             return;
+        }
 
         usuario.setNome(nome.isEmpty() ? usuario.getNome() : nome);
         usuario.setEmail(email.isEmpty() ? usuario.getEmail() : email);
@@ -127,10 +154,19 @@ public class UsuarioController {
     private void excluirUsuario(Scanner scanner) {
         listarUsuarios();
         System.out.println("Digite o ID do usuário que deseja excluir (Tecle 0 se quiser voltar):");
-        Long id = Long.parseLong(scanner.nextLine());
-        if (id == 0) {
+        String idStr = scanner.nextLine();
+        if (idStr.equals("0")) {
             return;
         }
+
+        Long id;
+        try {
+            id = Long.parseLong(idStr);
+        } catch (NumberFormatException e) {
+            System.out.println("ID inválido! Por favor, insira um número válido.");
+            return;
+        }
+
         try {
             usuarioService.deleteById(id);
             System.out.println("Usuário excluído com sucesso!");

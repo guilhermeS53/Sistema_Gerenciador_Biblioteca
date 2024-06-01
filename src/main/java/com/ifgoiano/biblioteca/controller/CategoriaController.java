@@ -26,7 +26,19 @@ public class CategoriaController {
             System.out.println("4. Deletar Categoria");
             System.out.println("0. Voltar");
             System.out.println();
-            int opcao = Integer.parseInt(scanner.nextLine());
+            
+            String input = scanner.nextLine();
+            int opcao = -1;
+
+            try {
+                if (input.isEmpty()) {
+                    throw new NumberFormatException();
+                }
+                opcao = Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                System.out.println("Entrada inválida! Por favor, insira um número.");
+                continue;
+            }
 
             if (opcao == 0)
                 break;
@@ -80,11 +92,16 @@ public class CategoriaController {
     private void atualizarCategoria(Scanner scanner) {
         listarCategorias(); // Lista todas as Categorias cadastrados no sistema
         System.out.println("ID da Categoria a ser atualizada (Tecle 0 caso queira voltar):");
-        Long id = Long.parseLong(scanner.nextLine());
-        if (id == 0) {
+        String idStr = scanner.nextLine();
+        if (idStr.equals("0")) {
             return; // Volta ao menu principal
         }
+        Long id = -1L;
         try {
+            if (idStr.isEmpty()) {
+                throw new NumberFormatException();
+            }
+            id = Long.parseLong(idStr);
             Categoria categoria = categoriaService.findById(id);
             System.out.println();
             System.out.println("Novo nome da Categoria:");
@@ -93,6 +110,8 @@ public class CategoriaController {
             categoriaService.save(categoria);
             System.out.println("Categoria atualizada com sucesso!");
             System.out.println();
+        } catch (NumberFormatException e) {
+            System.out.println("ID inválido! Por favor, insira um número válido.");
         } catch (ResourceNotFoundException ex) {
             System.out.println(ex.getMessage());
             System.out.println();
@@ -102,14 +121,21 @@ public class CategoriaController {
     private void deletarCategoria(Scanner scanner) {
         listarCategorias(); // Lista todas as Categorias cadastrados no sistema
         System.out.println("ID da Categoria a ser deletada (Tecle 0 para voltar):");
-        Long id = Long.parseLong(scanner.nextLine());
-        if (id == 0) {
+        String idStr = scanner.nextLine();
+        if (idStr.equals("0")) {
             return; // Volta ao menu principal
         }
+        Long id = -1L;
         try {
+            if (idStr.isEmpty()) {
+                throw new NumberFormatException();
+            }
+            id = Long.parseLong(idStr);
             categoriaService.deleteById(id);
             System.out.println("Categoria deletada com sucesso!");
             System.out.println();
+        } catch (NumberFormatException e) {
+            System.out.println("ID inválido! Por favor, insira um número válido.");
         } catch (ResourceNotFoundException ex) {
             System.out.println(ex.getMessage());
             System.out.println();

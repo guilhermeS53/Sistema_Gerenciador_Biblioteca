@@ -37,7 +37,19 @@ public class EmprestimoController {
             System.out.println("3. Listar Empréstimos");
             System.out.println("0. Voltar");
             System.out.println();
-            int opcao = Integer.parseInt(scanner.nextLine());
+            
+            String input = scanner.nextLine();
+            int opcao = -1;
+
+            try {
+                if (input.isEmpty()) {
+                    throw new NumberFormatException();
+                }
+                opcao = Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                System.out.println("Entrada inválida! Por favor, insira um número.");
+                continue;
+            }
 
             if (opcao == 0)
                 break;
@@ -65,7 +77,17 @@ public class EmprestimoController {
             System.out.println("ID do Livro (Tecle 0 se quiser voltar):");
             String livroIdStr = scanner.nextLine();
             if (livroIdStr.equals("0")) return;
-            Long livroId = Long.parseLong(livroIdStr);
+
+            Long livroId = -1L;
+            try {
+                if (livroIdStr.isEmpty()) {
+                    throw new NumberFormatException();
+                }
+                livroId = Long.parseLong(livroIdStr);
+            } catch (NumberFormatException e) {
+                System.out.println("ID do livro inválido! Por favor, insira um número válido.");
+                return;
+            }
 
             Livro livro = livroService.findById(livroId);
             if (livro.isEmprestado()) {
@@ -79,7 +101,17 @@ public class EmprestimoController {
             System.out.println("ID do Usuário (Tecle 0 se quiser voltar):");
             String usuarioIdStr = scanner.nextLine();
             if (usuarioIdStr.equals("0")) return;
-            Long usuarioId = Long.parseLong(usuarioIdStr);
+
+            Long usuarioId = -1L;
+            try {
+                if (usuarioIdStr.isEmpty()) {
+                    throw new NumberFormatException();
+                }
+                usuarioId = Long.parseLong(usuarioIdStr);
+            } catch (NumberFormatException e) {
+                System.out.println("ID do usuário inválido! Por favor, insira um número válido.");
+                return;
+            }
 
             Usuario usuario = usuarioService.findById(usuarioId);
 
@@ -109,7 +141,17 @@ public class EmprestimoController {
             System.out.println("ID do Empréstimo (Tecle 0 se quiser voltar):");
             String emprestimoIdStr = scanner.nextLine();
             if (emprestimoIdStr.equals("0")) return;
-            Long emprestimoId = Long.parseLong(emprestimoIdStr);
+
+            Long emprestimoId = -1L;
+            try {
+                if (emprestimoIdStr.isEmpty()) {
+                    throw new NumberFormatException();
+                }
+                emprestimoId = Long.parseLong(emprestimoIdStr);
+            } catch (NumberFormatException e) {
+                System.out.println("ID do empréstimo inválido! Por favor, insira um número válido.");
+                return;
+            }
 
             Emprestimo emprestimo = emprestimoService.findById(emprestimoId);
             if (emprestimo.getStatus() == StatusEmprestimo.DEVOLVIDO) {
