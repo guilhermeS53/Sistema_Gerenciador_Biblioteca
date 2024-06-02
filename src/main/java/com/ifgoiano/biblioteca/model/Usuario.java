@@ -1,23 +1,24 @@
-package com.ifgoiano.biblioteca.model;
+package com.ifgoiano.biblioteca.model; // Definição do pacote onde a classe está registrada
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.Entity; // Importação da biblioteca do Entity
+import jakarta.persistence.GeneratedValue; // Importação da biblioteca
+import jakarta.persistence.GenerationType; // Importação do tipo de geração das chaves
+import jakarta.persistence.Id; // Importação do campo de Id
 
 // Criação da Entidade Usuário na lógica de negócio em Model
 // Adicionado @Entity para que o Hibernate possa encontrar a entidade
-@Entity
 
+@Entity// Anotação que indica que a classe Livro é uma entidade de Java Persistence API (JPA) e será mapeada para uma tabela no banco de dados
 public class Usuario {
     
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String nome;
-    private String email;
-    private String telefone;
+    @Id // Campo Id é a chave primária da entidade
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Define a estratégia de geração de valor automático para a chave primária
+    private Long id; // Campo que representa o identificador único de Usuario
+    private String nome; // Campo que representa o nome do Usuario
+    private String email; // Campo que representa o e-mail do Usuario
+    private String telefone; // Campo que representa o telefone do Usuario
 
+    // Getters e Setters para os atributos da classe
     public Long getId() {
         return id;
     }

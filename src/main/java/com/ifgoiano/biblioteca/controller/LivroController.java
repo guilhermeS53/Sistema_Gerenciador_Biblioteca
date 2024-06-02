@@ -1,33 +1,33 @@
-package com.ifgoiano.biblioteca.controller;
+package com.ifgoiano.biblioteca.controller; // Definição do pacote onde a classe está registrada
 
-import java.util.List;
-import java.util.Scanner;
+import java.util.List; // Importação da classe List para utilização em Coleções
+import java.util.Scanner;// Importação da classe Scanner para leitura de dados do console
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Autowired; // Importação para injeção de dependência
 
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Controller; // Importação para definição de controlador Spring
 
-import com.ifgoiano.biblioteca.model.Categoria;
-import com.ifgoiano.biblioteca.model.Livro;
-import com.ifgoiano.biblioteca.model.LivroComEmprestimosException;
-import com.ifgoiano.biblioteca.model.ResourceNotFoundException;
-import com.ifgoiano.biblioteca.service.CategoriaService;
-import com.ifgoiano.biblioteca.service.LivroService;
+import com.ifgoiano.biblioteca.model.Categoria; // Importação do modelo Categoria
+import com.ifgoiano.biblioteca.model.Livro; // Importação do modelo Livro
+import com.ifgoiano.biblioteca.model.LivroComEmprestimosException; // Importação de exceção personalizada para relação Emprestimo e Usuario
+import com.ifgoiano.biblioteca.model.ResourceNotFoundException; // Importação da exceção personalizada
+import com.ifgoiano.biblioteca.service.CategoriaService; // Importação do serviço Categoria
+import com.ifgoiano.biblioteca.service.LivroService; // Importação do serviço Livro
 
 // Controlador para interação com os livros da biblioteca
-
-@Controller
+@Controller // Anotação que indica que esta classe é um controlador gerenciado pelo Spring
 public class LivroController {
 
-    @Autowired
+    @Autowired // Injeção de dependência do serviço Livro
     private LivroService livroService;
 
-    @Autowired
+    @Autowired // Injeção de dependência do serviço Categoria
     private CategoriaService categoriaService;
 
-    @Autowired
+    @Autowired // Injeção de dependência do controlador Categoria
     private CategoriaController categoriaController;
 
+    // Método para exibir o menu de gerenciamento de livros
     public void run(Scanner scanner) {
         while (true) {
             System.out.println();
@@ -41,14 +41,14 @@ public class LivroController {
             System.out.println("0. Voltar");
             System.out.println();
 
-            String input = scanner.nextLine();
+            String input = scanner.nextLine(); // Leitura da opção do usuário
             int opcao = -1;
 
             try {
                 if (input.isEmpty()) {
                     throw new NumberFormatException();
                 }
-                opcao = Integer.parseInt(input);
+                opcao = Integer.parseInt(input); // Conversão da entrada para inteiro
             } catch (NumberFormatException e) {
                 System.out.println("Entrada inválida! Por favor, insira um número.");
                 continue;
@@ -58,6 +58,7 @@ public class LivroController {
                 break;
             }
 
+            // Chamada dos métodos conforme a opção selecionada
             switch (opcao) {
                 case 1:
                     listarLivros();
@@ -83,6 +84,7 @@ public class LivroController {
         }
     }
 
+    // Método para listar todos os livros
     private void listarLivros() {
         livroService.findAll().forEach(l -> {
             System.out.println();
@@ -97,6 +99,7 @@ public class LivroController {
         });
     }
 
+    // Método para buscar um livro por ID
     private void buscarLivroPorId(Scanner scanner) {
         System.out.println("Digite o ID do Livro (Tecle 0 para voltar):");
         String input = scanner.nextLine();
@@ -106,7 +109,7 @@ public class LivroController {
             if (input.isEmpty()) {
                 throw new NumberFormatException();
             }
-            id = Long.parseLong(input);
+            id = Long.parseLong(input); // Conversão da entrada para Long
         } catch (NumberFormatException e) {
             System.out.println("ID inválido! Por favor, insira um número válido.");
             return;
@@ -116,7 +119,7 @@ public class LivroController {
             return;
         }
 
-        Livro livro = livroService.findById(id);
+        Livro livro = livroService.findById(id); // Busca do livro pelo ID
         if (livro != null) {
             System.out.println();
             System.out.println("ID: " + livro.getId());
@@ -132,6 +135,7 @@ public class LivroController {
         }
     }
 
+    // Método para buscar livros por nome
     private void buscarLivroPorNome(Scanner scanner) {
         System.out.println();
         System.out.println("Digite o nome do Livro (mínimo 4 caracteres, ou tecle 0 para voltar): ");
@@ -144,10 +148,10 @@ public class LivroController {
             System.out.println();
             System.out.println("Nome muito curto. Por favor, digite pelo menos 4 caracteres.");
             System.out.println();
-            buscarLivroPorNome(scanner);
+            buscarLivroPorNome(scanner); // Recursão para nova tentativa
             return;
         }
-        List<Livro> livrosBusca = livroService.findByTituloContaining(nomeLivro);
+        List<Livro> livrosBusca = livroService.findByTituloContaining(nomeLivro); // Busca de livros pelo título
 
         if (livrosBusca.isEmpty()) {
             System.out.println();
@@ -167,6 +171,7 @@ public class LivroController {
         }
     }
 
+    // Método para adicionar um novo livro
     private void adicionarLivro(Scanner scanner) {
         System.out.println();
         System.out.println("Título do Livro (ou 0 para voltar):");
@@ -187,7 +192,7 @@ public class LivroController {
             if (inputAnoPub.isEmpty()) {
                 throw new NumberFormatException();
             }
-            anoPub = Integer.parseInt(inputAnoPub);
+            anoPub = Integer.parseInt(inputAnoPub); // Conversão da entrada para inteiro
         } catch (NumberFormatException e) {
             System.out.println("Ano de publicação inválido! Por favor, insira um número válido.");
             return;
@@ -203,7 +208,7 @@ public class LivroController {
             return;
         }
 
-        categoriaController.listarCategorias();
+        categoriaController.listarCategorias(); // Listar categorias disponíveis
         System.out.println("ID da Categoria: (Caso não encontre a que deseja, informe 0 para adicionar uma nova categoria)");
         String inputCategoriaId = scanner.nextLine();
         Long categoriaId = -1L;
@@ -212,7 +217,7 @@ public class LivroController {
             if (inputCategoriaId.isEmpty()) {
                 throw new NumberFormatException();
             }
-            categoriaId = Long.parseLong(inputCategoriaId);
+            categoriaId = Long.parseLong(inputCategoriaId); // Conversão da entrada para Long
         } catch (NumberFormatException e) {
             System.out.println("ID de categoria inválido! Por favor, insira um número válido.");
             return;
@@ -220,13 +225,13 @@ public class LivroController {
 
         Categoria categoria = null;
         if (categoriaId == 0) {
-            categoria = adicionarNovaCategoria(scanner);
+            categoria = adicionarNovaCategoria(scanner); // Adicionar nova categoria se ID for 0
         } else {
             categoria = categoriaService.findById(categoriaId);
             if (categoria == null) {
                 System.out.println();
                 System.out.println("Categoria não encontrada. Que tal adicionar uma nova?");
-                categoria = adicionarNovaCategoria(scanner);
+                categoria = adicionarNovaCategoria(scanner); // Adicionar nova categoria se não encontrada
             }
         }
 
@@ -236,11 +241,12 @@ public class LivroController {
         livro.setAnoPub(anoPub);
         livro.setIsbn(isbn);
         livro.setCategoria(categoria);
-        livroService.save(livro);
+        livroService.save(livro); // Salvar novo livro
         System.out.println("Livro adicionado com sucesso!");
         System.out.println();
     }
 
+    // Método para adicionar uma nova categoria
     private Categoria adicionarNovaCategoria(Scanner scanner) {
         while (true) {
             System.out.println("Nome da nova Categoria (Tecle 0 caso queira voltar):");
@@ -254,11 +260,12 @@ public class LivroController {
             } else {
                 Categoria novaCategoria = new Categoria();
                 novaCategoria.setNome(nomeCategoria);
-                return categoriaService.save(novaCategoria);
+                return categoriaService.save(novaCategoria); // Salvar nova categoria
             }
         }
     }
 
+    // Método para atualizar um livro existente
     private void atualizarLivro(Scanner scanner) {
         listarLivros();
         System.out.println("ID do Livro a ser atualizado:");
@@ -269,7 +276,7 @@ public class LivroController {
             if (input.isEmpty()) {
                 throw new NumberFormatException();
             }
-            id = Long.parseLong(input);
+            id = Long.parseLong(input); // Conversão da entrada para Long
         } catch (NumberFormatException e) {
             System.out.println("ID inválido! Por favor, insira um número válido.");
             return;
@@ -298,7 +305,7 @@ public class LivroController {
             if (inputAnoPub.isEmpty()) {
                 throw new NumberFormatException();
             }
-            anoPub = Integer.parseInt(inputAnoPub);
+            anoPub = Integer.parseInt(inputAnoPub); // Conversão da entrada para inteiro
         } catch (NumberFormatException e) {
             System.out.println("Ano de publicação inválido! Por favor, insira um número válido.");
             return;
@@ -307,7 +314,7 @@ public class LivroController {
         System.out.println("Novo ISBN do Livro:");
         String isbn = scanner.nextLine();
 
-        categoriaController.listarCategorias();
+        categoriaController.listarCategorias(); // Listar categorias disponíveis
         System.out.println("ID da Nova Categoria:");
         String inputCategoriaId = scanner.nextLine();
         Long categoriaId = -1L;
@@ -316,7 +323,7 @@ public class LivroController {
             if (inputCategoriaId.isEmpty()) {
                 throw new NumberFormatException();
             }
-            categoriaId = Long.parseLong(inputCategoriaId);
+            categoriaId = Long.parseLong(inputCategoriaId); // Conversão da entrada para Long
         } catch (NumberFormatException e) {
             System.out.println("ID de categoria inválido! Por favor, insira um número válido.");
             return;
@@ -334,11 +341,12 @@ public class LivroController {
         livro.setAnoPub(anoPub);
         livro.setIsbn(isbn);
         livro.setCategoria(categoria);
-        livroService.updateLivro(id, livro);
+        livroService.updateLivro(id, livro); // Atualizar livro
         System.out.println("Livro atualizado com sucesso!");
         System.out.println();
     }
 
+    // Método para deletar um livro
     private void deletarLivro(Scanner scanner) {
         listarLivros();
         System.out.println("ID do Livro a ser deletado:");
@@ -349,7 +357,7 @@ public class LivroController {
             if (input.isEmpty()) {
                 throw new NumberFormatException();
             }
-            id = Long.parseLong(input);
+            id = Long.parseLong(input); // Conversão da entrada para Long
         } catch (NumberFormatException e) {
             System.out.println("ID inválido! Por favor, insira um número válido.");
             return;
@@ -360,7 +368,7 @@ public class LivroController {
         }
 
         try {
-            livroService.deleteById(id);
+            livroService.deleteById(id); // Deletar livro pelo ID
             System.out.println("Livro deletado com sucesso!");
             System.out.println();
         } catch (ResourceNotFoundException ex) {

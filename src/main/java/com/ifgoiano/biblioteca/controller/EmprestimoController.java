@@ -1,35 +1,37 @@
-package com.ifgoiano.biblioteca.controller;
+package com.ifgoiano.biblioteca.controller; // Definição do pacote onde a classe está registrada
 
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Scanner;
+import java.time.LocalDate; // Importação da classe LocalDate para visualização de data local
+import java.util.List; // Importação da classe List para utilização em Coleções
+import java.util.Scanner; // Importação da classe Scanner para leitura de dados do console
 
-import org.springframework.stereotype.Controller;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller; // Importação para definição de controlador Spring
+import org.springframework.beans.factory.annotation.Autowired; // Importação para injeção de dependência
 
-import com.ifgoiano.biblioteca.model.Emprestimo;
-import com.ifgoiano.biblioteca.service.IEmprestimoService;
-import com.ifgoiano.biblioteca.model.StatusEmprestimo;
-import com.ifgoiano.biblioteca.model.Livro;
-import com.ifgoiano.biblioteca.model.ResourceNotFoundException;
-import com.ifgoiano.biblioteca.model.Usuario;
-import com.ifgoiano.biblioteca.service.ILivroService;
-import com.ifgoiano.biblioteca.service.IUsuarioService;
+import com.ifgoiano.biblioteca.model.Emprestimo; // Importação do modelo Emprestimo
+import com.ifgoiano.biblioteca.service.IEmprestimoService; // Importação do serviço de Emprestimo
+import com.ifgoiano.biblioteca.model.StatusEmprestimo; // Importação do enum StatusEmprestimo
+import com.ifgoiano.biblioteca.model.Livro; // Importação do modelo Livro
+import com.ifgoiano.biblioteca.model.ResourceNotFoundException; // Importação da exceção personalizada
+import com.ifgoiano.biblioteca.model.Usuario; // Importação do modelo Usuario
+import com.ifgoiano.biblioteca.service.ILivroService; // Importação do serviço de Livro
+import com.ifgoiano.biblioteca.service.IUsuarioService; // Importação do serviço de Usuario
 
-@Controller
+@Controller // Anotação que indica que esta classe é um controlador gerenciado pelo Spring
 public class EmprestimoController {
 
-    @Autowired
+    @Autowired // Injeção de dependência do serviço de empréstimo
     private IEmprestimoService emprestimoService;
 
-    @Autowired
+    @Autowired // Injeção de dependência do serviço de livros
     private ILivroService livroService;
 
-    @Autowired
+    @Autowired // Injeção de dependência do serviço de usuários
     private IUsuarioService usuarioService;
 
+    // Injeção de dependência do serviço de usuários
     public void run(Scanner scanner) {
         while (true) {
+            // Exibição do menu ao usuario
             System.out.println();
             System.out.println("Gerenciar Empréstimos:");
             System.out.println("1. Registrar Empréstimo");
@@ -38,22 +40,23 @@ public class EmprestimoController {
             System.out.println("0. Voltar");
             System.out.println();
             
-            String input = scanner.nextLine();
+            String input = scanner.nextLine(); // Leitura da entrada do usuario
             int opcao = -1;
 
             try {
                 if (input.isEmpty()) {
-                    throw new NumberFormatException();
+                    throw new NumberFormatException(); // Lança exceção se a entrada estiver vazia
                 }
-                opcao = Integer.parseInt(input);
+                opcao = Integer.parseInt(input); // Converte a entrada para um número inteiro
             } catch (NumberFormatException e) {
                 System.out.println("Entrada inválida! Por favor, insira um número.");
-                continue;
+                continue; // Continua o loop em caso de entrada inválida
             }
 
             if (opcao == 0)
-                break;
-
+            break; // Sai do loop e retorna ao menu principal
+            
+            // Chama o método apropriado com base na opção selecionada
             switch (opcao) {
                 case 1:
                     registrarEmprestimo(scanner);
@@ -70,9 +73,10 @@ public class EmprestimoController {
         }
     }
 
+    // Método para registrar um novo empréstimo
     private void registrarEmprestimo(Scanner scanner) {
         try {
-            listarLivrosDisponiveis();
+            listarLivrosDisponiveis(); // Lista todos os livros disponíveis
             System.out.println();
             System.out.println("ID do Livro (Tecle 0 se quiser voltar):");
             String livroIdStr = scanner.nextLine();
@@ -83,20 +87,20 @@ public class EmprestimoController {
                 if (livroIdStr.isEmpty()) {
                     throw new NumberFormatException();
                 }
-                livroId = Long.parseLong(livroIdStr);
+                livroId = Long.parseLong(livroIdStr); // Converte a entrada para um número longo
             } catch (NumberFormatException e) {
                 System.out.println("ID do livro inválido! Por favor, insira um número válido.");
                 return;
             }
 
-            Livro livro = livroService.findById(livroId);
-            if (livro.isEmprestado()) {
+            Livro livro = livroService.findById(livroId); // Busca o livro pelo ID
+            if (livro.isEmprestado()) { // Verifica se o livro está disponível
                 System.out.println();
                 System.out.println("Livro indisponível.");
                 return;
             }
 
-            listarUsuarios();
+            listarUsuarios(); // Lista todos os usuários
             System.out.println();
             System.out.println("ID do Usuário (Tecle 0 se quiser voltar):");
             String usuarioIdStr = scanner.nextLine();
@@ -107,23 +111,23 @@ public class EmprestimoController {
                 if (usuarioIdStr.isEmpty()) {
                     throw new NumberFormatException();
                 }
-                usuarioId = Long.parseLong(usuarioIdStr);
+                usuarioId = Long.parseLong(usuarioIdStr); // Converte a entrada para um número longo
             } catch (NumberFormatException e) {
                 System.out.println("ID do usuário inválido! Por favor, insira um número válido.");
                 return;
             }
 
-            Usuario usuario = usuarioService.findById(usuarioId);
+            Usuario usuario = usuarioService.findById(usuarioId); // Busca o usuário pelo ID
 
             Emprestimo emprestimo = new Emprestimo();
             emprestimo.setLivro(livro);
             emprestimo.setUsuario(usuario);
-            emprestimo.setDataEmprestimo(LocalDate.now());
-            emprestimo.setStatus(StatusEmprestimo.ATIVO);
+            emprestimo.setDataEmprestimo(LocalDate.now()); // Define a data atual como data do empréstimo
+            emprestimo.setStatus(StatusEmprestimo.ATIVO); // Define o status do empréstimo como ativo
 
-            livro.setEmprestado(true);
-            emprestimoService.save(emprestimo);
-            livroService.save(livro);
+            livro.setEmprestado(true); // Marca o livro como emprestado
+            emprestimoService.save(emprestimo); // Salva o empréstimo
+            livroService.save(livro); // Atualiza o status do livro
 
             System.out.println("Empréstimo registrado com sucesso!");
             System.out.println();
@@ -135,9 +139,10 @@ public class EmprestimoController {
         }
     }
 
+    // Método para registrar a devolução de um empréstimo
     private void registrarDevolucao(Scanner scanner) {
         try {
-            listarEmprestimosAtivos();
+            listarEmprestimosAtivos(); // Lista todos os empréstimos ativos
             System.out.println("ID do Empréstimo (Tecle 0 se quiser voltar):");
             String emprestimoIdStr = scanner.nextLine();
             if (emprestimoIdStr.equals("0")) return;
@@ -147,25 +152,25 @@ public class EmprestimoController {
                 if (emprestimoIdStr.isEmpty()) {
                     throw new NumberFormatException();
                 }
-                emprestimoId = Long.parseLong(emprestimoIdStr);
+                emprestimoId = Long.parseLong(emprestimoIdStr); // Converte a entrada para um número longo
             } catch (NumberFormatException e) {
                 System.out.println("ID do empréstimo inválido! Por favor, insira um número válido.");
                 return;
             }
 
-            Emprestimo emprestimo = emprestimoService.findById(emprestimoId);
-            if (emprestimo.getStatus() == StatusEmprestimo.DEVOLVIDO) {
+            Emprestimo emprestimo = emprestimoService.findById(emprestimoId); // Busca o empréstimo pelo ID
+            if (emprestimo.getStatus() == StatusEmprestimo.DEVOLVIDO) { // Verifica se o empréstimo já foi devolvido
                 System.out.println("Empréstimo já devolvido.");
                 System.out.println();
                 return;
             }
 
-            emprestimo.setDataDevolucao(LocalDate.now());
-            emprestimo.setStatus(StatusEmprestimo.DEVOLVIDO);
-            emprestimo.getLivro().setEmprestado(false);
+            emprestimo.setDataDevolucao(LocalDate.now()); // Define a data atual como data de devolução
+            emprestimo.setStatus(StatusEmprestimo.DEVOLVIDO); // Define o status do empréstimo como devolvido
+            emprestimo.getLivro().setEmprestado(false); // Marca o livro como não emprestado
 
-            emprestimoService.save(emprestimo);
-            livroService.save(emprestimo.getLivro());
+            emprestimoService.save(emprestimo); // Atualiza o empréstimo
+            livroService.save(emprestimo.getLivro()); // Atualiza o status do livro
 
             System.out.println("Devolução registrada com sucesso!");
             System.out.println();
@@ -178,8 +183,9 @@ public class EmprestimoController {
         }
     }
 
+    // Método para listar todos os empréstimos
     private void listarEmprestimos() {
-        List<Emprestimo> emprestimos = emprestimoService.findAll();
+        List<Emprestimo> emprestimos = emprestimoService.findAll(); // Busca todos os empréstimos
         for (Emprestimo emprestimo : emprestimos) {
             System.out.println("ID: " + emprestimo.getId() + " | Livro: " + emprestimo.getLivro().getTitulo() +
                 " | Usuário: " + emprestimo.getUsuario().getNome() + " | Status: " + emprestimo.getStatus() +
@@ -189,19 +195,21 @@ public class EmprestimoController {
         }
     }
 
+    // Método para listar todos os livros disponíveis para empréstimo
     private void listarLivrosDisponiveis() {
-        List<Livro> livros = livroService.findAll();
+        List<Livro> livros = livroService.findAll(); // Busca todos os livros
         System.out.println("Livros Disponíveis:");
         for (Livro livro : livros) {
-            if (!livro.isEmprestado()) {
+            if (!livro.isEmprestado()) { // Verifica se o livro está disponível
                 System.out.println("ID: " + livro.getId() + " | Título: " + livro.getTitulo() + " | Autor: " + livro.getAutor());
                 System.out.println();
             }
         }
     }
 
+    // Método para listar todos os usuários
     private void listarUsuarios() {
-        List<Usuario> usuarios = usuarioService.findAll();
+        List<Usuario> usuarios = usuarioService.findAll(); // Busca todos os usuários
         System.out.println("Usuários:");
         for (Usuario usuario : usuarios) {
             System.out.println("ID: " + usuario.getId() + " | Nome: " + usuario.getNome());
@@ -209,11 +217,12 @@ public class EmprestimoController {
         }
     }
 
+    // Método para listar todos os empréstimos ativos
     private void listarEmprestimosAtivos() {
-        List<Emprestimo> emprestimos = emprestimoService.findAll();
+        List<Emprestimo> emprestimos = emprestimoService.findAll(); // Busca todos os empréstimos
         System.out.println("Empréstimos Ativos:");
         for (Emprestimo emprestimo : emprestimos) {
-            if (emprestimo.getStatus() == StatusEmprestimo.ATIVO) {
+            if (emprestimo.getStatus() == StatusEmprestimo.ATIVO) { // Verifica se o status é ativo
                 System.out.println("ID: " + emprestimo.getId() + " | Livro: " + emprestimo.getLivro().getTitulo() +
                     " | Usuário: " + emprestimo.getUsuario().getNome() + " | Data Empréstimo: " + emprestimo.getDataEmprestimo());
                 System.out.println();
