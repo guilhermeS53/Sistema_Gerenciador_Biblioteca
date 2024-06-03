@@ -126,10 +126,12 @@ public class UsuarioController {
             return;
         }
 
-        // Busca o usuário pelo ID
-        Usuario usuario = usuarioService.findById(id);
-        if (usuario == null) {
-            System.out.println("Usuário não encontrado.");
+        Usuario usuario;
+        try {
+            // Busca o usuário pelo ID
+            usuario = usuarioService.findById(id);
+        } catch (ResourceNotFoundException e) {
+            System.out.println(e.getMessage());
             System.out.println();
             return;
         }

@@ -104,7 +104,7 @@ public class LivroController {
         System.out.println("Digite o ID do Livro (Tecle 0 para voltar):");
         String input = scanner.nextLine();
         Long id = -1L;
-
+    
         try {
             if (input.isEmpty()) {
                 throw new NumberFormatException();
@@ -114,23 +114,25 @@ public class LivroController {
             System.out.println("ID inválido! Por favor, insira um número válido.");
             return;
         }
-
+    
         if (id == 0) {
             return;
         }
-
-        Livro livro = livroService.findById(id); // Busca do livro pelo ID
-        if (livro != null) {
-            System.out.println();
-            System.out.println("ID: " + livro.getId());
-            System.out.println("Título: " + livro.getTitulo());
-            System.out.println("Autor: " + livro.getAutor());
-            System.out.println("Ano de Publicação: " + livro.getAnoPub());
-            System.out.println("ISBN: " + livro.getIsbn());
-            System.out.println("Categoria: " + (livro.getCategoria() != null ? livro.getCategoria().getNome() : "Sem Categoria"));
-            System.out.println();
-        } else {
-            System.out.println("Livro não encontrado.");
+    
+        try {
+            Livro livro = livroService.findById(id); // Busca do livro pelo ID
+            if (livro != null) {
+                System.out.println();
+                System.out.println("ID: " + livro.getId());
+                System.out.println("Título: " + livro.getTitulo());
+                System.out.println("Autor: " + livro.getAutor());
+                System.out.println("Ano de Publicação: " + livro.getAnoPub());
+                System.out.println("ISBN: " + livro.getIsbn());
+                System.out.println("Categoria: " + (livro.getCategoria() != null ? livro.getCategoria().getNome() : "Sem Categoria"));
+                System.out.println();
+            }
+        } catch (ResourceNotFoundException e) {
+            System.out.println(e.getMessage()); // Exibir mensagem de erro ao usuário
             System.out.println();
         }
     }
@@ -271,7 +273,7 @@ public class LivroController {
         System.out.println("ID do Livro a ser atualizado:");
         String input = scanner.nextLine();
         Long id = -1L;
-
+    
         try {
             if (input.isEmpty()) {
                 throw new NumberFormatException();
@@ -281,69 +283,68 @@ public class LivroController {
             System.out.println("ID inválido! Por favor, insira um número válido.");
             return;
         }
-
+    
         if (id == 0) {
             return;
         }
-
-        Livro livro = livroService.findById(id);
-        if (livro == null) {
-            System.out.println("Livro não encontrado.");
-            System.out.println();
-            return;
-        }
-
-        System.out.println("Novo título do Livro:");
-        String titulo = scanner.nextLine();
-        System.out.println("Novo autor do Livro:");
-        String autor = scanner.nextLine();
-        System.out.println("Novo ano de Publicação:");
-        String inputAnoPub = scanner.nextLine();
-        int anoPub = -1;
-
+    
         try {
-            if (inputAnoPub.isEmpty()) {
-                throw new NumberFormatException();
+            Livro livro = livroService.findById(id);
+            System.out.println("Novo título do Livro:");
+            String titulo = scanner.nextLine();
+            System.out.println("Novo autor do Livro:");
+            String autor = scanner.nextLine();
+            System.out.println("Novo ano de Publicação:");
+            String inputAnoPub = scanner.nextLine();
+            int anoPub = -1;
+    
+            try {
+                if (inputAnoPub.isEmpty()) {
+                    throw new NumberFormatException();
+                }
+                anoPub = Integer.parseInt(inputAnoPub); // Conversão da entrada para inteiro
+            } catch (NumberFormatException e) {
+                System.out.println("Ano de publicação inválido! Por favor, insira um número válido.");
+                return;
             }
-            anoPub = Integer.parseInt(inputAnoPub); // Conversão da entrada para inteiro
-        } catch (NumberFormatException e) {
-            System.out.println("Ano de publicação inválido! Por favor, insira um número válido.");
-            return;
-        }
-
-        System.out.println("Novo ISBN do Livro:");
-        String isbn = scanner.nextLine();
-
-        categoriaController.listarCategorias(); // Listar categorias disponíveis
-        System.out.println("ID da Nova Categoria:");
-        String inputCategoriaId = scanner.nextLine();
-        Long categoriaId = -1L;
-
-        try {
-            if (inputCategoriaId.isEmpty()) {
-                throw new NumberFormatException();
+    
+            System.out.println("Novo ISBN do Livro:");
+            String isbn = scanner.nextLine();
+    
+            categoriaController.listarCategorias(); // Listar categorias disponíveis
+            System.out.println("ID da Nova Categoria:");
+            String inputCategoriaId = scanner.nextLine();
+            Long categoriaId = -1L;
+    
+            try {
+                if (inputCategoriaId.isEmpty()) {
+                    throw new NumberFormatException();
+                }
+                categoriaId = Long.parseLong(inputCategoriaId); // Conversão da entrada para Long
+            } catch (NumberFormatException e) {
+                System.out.println("ID de categoria inválido! Por favor, insira um número válido.");
+                return;
             }
-            categoriaId = Long.parseLong(inputCategoriaId); // Conversão da entrada para Long
-        } catch (NumberFormatException e) {
-            System.out.println("ID de categoria inválido! Por favor, insira um número válido.");
-            return;
-        }
-
-        Categoria categoria = categoriaService.findById(categoriaId);
-        if (categoria == null) {
-            System.out.println("Categoria não encontrada.");
+    
+            Categoria categoria = categoriaService.findById(categoriaId);
+            if (categoria == null) {
+                System.out.println("Categoria não encontrada.");
+                System.out.println();
+                return;
+            }
+    
+            livro.setTitulo(titulo);
+            livro.setAutor(autor);
+            livro.setAnoPub(anoPub);
+            livro.setIsbn(isbn);
+            livro.setCategoria(categoria);
+            livroService.updateLivro(id, livro); // Atualizar livro
+            System.out.println("Livro atualizado com sucesso!");
             System.out.println();
-            return;
+        } catch (ResourceNotFoundException e) {
+            System.out.println(e.getMessage());
+            System.out.println();
         }
-
-        livro.setTitulo(titulo);
-        livro.setAutor(autor);
-        livro.setAnoPub(anoPub);
-        livro.setIsbn(isbn);
-        livro.setCategoria(categoria);
-        livroService.updateLivro(id, livro); // Atualizar livro
-        System.out.println("Livro atualizado com sucesso!");
-        System.out.println();
     }
 
     // Método para deletar um livro
@@ -352,7 +353,7 @@ public class LivroController {
         System.out.println("ID do Livro a ser deletado:");
         String input = scanner.nextLine();
         Long id = -1L;
-
+    
         try {
             if (input.isEmpty()) {
                 throw new NumberFormatException();
@@ -362,11 +363,11 @@ public class LivroController {
             System.out.println("ID inválido! Por favor, insira um número válido.");
             return;
         }
-
+    
         if (id == 0) {
             return;
         }
-
+    
         try {
             livroService.deleteById(id); // Deletar livro pelo ID
             System.out.println("Livro deletado com sucesso!");
