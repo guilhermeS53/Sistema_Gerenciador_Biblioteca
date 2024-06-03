@@ -18,4 +18,12 @@ public interface LivroRepository extends JpaRepository<Livro, Long> {
      * @return uma lista de livros cujos títulos contêm a sequência fornecida.
      */
     List<Livro> findByTituloContainingIgnoreCase(String titulo);
+
+    /**
+     * Método para encontrar categorias por id
+     * 
+     * @param categoriaId a sequência de id dos livros.
+     * @return uma lista de livros cujos títulos contêm a sequência fornecida.
+     */
+    boolean existsByCategoriaId(Long categoriaId);
 }

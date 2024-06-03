@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired; // Importação p
 import org.springframework.stereotype.Controller; // Importação para definição de controlador Spring
 
 import com.ifgoiano.biblioteca.model.Categoria; // Importação do modelo Categoria
+import com.ifgoiano.biblioteca.model.CategoriaComLivrosException;
 import com.ifgoiano.biblioteca.model.ResourceNotFoundException; // Importação da exceção personalizada
 import com.ifgoiano.biblioteca.service.CategoriaService; // Importação do serviço de categoria
 
@@ -145,6 +146,9 @@ public class CategoriaController {
         } catch (NumberFormatException e) {
             System.out.println("ID inválido! Por favor, insira um número ID válido.");
         } catch (ResourceNotFoundException ex) {
+            System.out.println(ex.getMessage());
+            System.out.println();
+        } catch (CategoriaComLivrosException ex) {
             System.out.println(ex.getMessage());
             System.out.println();
         }

@@ -77,8 +77,8 @@ public class LivroService implements ILivroService {
         // Verifica se o livro possui empréstimos ativos
         List<Emprestimo> emprestimos = emprestimoRepository.findByLivroId(id);
         if (!emprestimos.isEmpty()) {
-            throw new LivroComEmprestimosException(
-                    "Não é possível excluir o livro selecionado, porque já foi emprestado em algum momento.");
+            System.out.println();
+            throw new LivroComEmprestimosException("Não é possível excluir o livro selecionado, porque já foi emprestado em algum momento.");
         }
         // Se não houver empréstimos, exclui o livro
         livroRepository.deleteById(id);
@@ -94,6 +94,7 @@ public class LivroService implements ILivroService {
     @Override
     public Livro updateLivro(Long id, Livro livroDetails) {
         Livro livro = findById(id); // Busca o livro pelo ID
+        System.out.println();
         if (livro != null) { // Se o livro existir, atualiza seus dados
             livro.setTitulo(livroDetails.getTitulo());
             livro.setAutor(livroDetails.getAutor());

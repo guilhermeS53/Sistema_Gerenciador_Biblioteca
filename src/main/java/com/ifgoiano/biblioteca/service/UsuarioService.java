@@ -44,8 +44,8 @@ public class UsuarioService implements IUsuarioService {
 
     @Override
     public Usuario findById(Long id) {
-        return usuarioRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado para o id: " + id));
+        System.out.println();
+        return usuarioRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado para o id: " + id));
     }
     // Exclui um usuário pelo seu ID
 
@@ -54,6 +54,7 @@ public class UsuarioService implements IUsuarioService {
         // Verifica se o usuário possui empréstimos ativos
         List<Emprestimo> emprestimos = emprestimoRepository.findByUsuarioId(id);
         if (!emprestimos.isEmpty()) {
+            System.out.println();
             throw new UsuarioComEmprestimosException("Não é possível excluir o usuário, pois já houveram registros de empréstimo na Biblioteca.");
         }
         // Se não houver empréstimos, exclui o usuário
