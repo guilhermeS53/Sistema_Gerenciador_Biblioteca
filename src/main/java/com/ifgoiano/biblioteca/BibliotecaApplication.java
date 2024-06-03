@@ -50,7 +50,7 @@ public class BibliotecaApplication implements CommandLineRunner {
             System.out.println("2. Gerenciar Livros");
             System.out.println("3. Gerenciar Empréstimos");
             System.out.println("4. Gerenciar Categorias");
-            System.out.println("0. Sair");
+            System.out.println("0. Encerrar o Sistema");
             System.out.println();
 
             // Leitura da opção escolhida pelo usuário
