@@ -54,7 +54,7 @@ public class CategoriaService implements ICategoriaService {
             throw new ResourceNotFoundException("Categoria não encontrada para o id: " + id);
         } if (livroRepository.existsByCategoriaId(id)) {
             System.out.println();
-            throw new CategoriaComLivrosException("Não é possível excluir a categoria selecionada, porque já foi vinculada em algum momento em livro " + id);
+            throw new CategoriaComLivrosException("Não é possível excluir a categoria selecionada, porque já foi vinculada em algum momento a um livro");
         }
         categoriaRepository.deleteById(id); // Faz a deleção da categoria pelo ID
     }
